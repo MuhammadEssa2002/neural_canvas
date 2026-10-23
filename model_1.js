@@ -52,7 +52,7 @@ class Model_1{
 
 		this.Z3 = math.add(
 		  math.multiply(this.L3, this.A2),
-		  b3
+		  this.b3
 		  );
 
 		this.Z3_data = this.Z3.toArray();
@@ -212,6 +212,19 @@ class Model_1{
 		textAlign(CENTER, CENTER);
 		text("Prediction",1500,540);
 	    pop();
+
+	    push();
+		fill(255);
+		let info = "Trained using NumPy (Python)\n" +
+		             "Parameters: 16,330\n" +
+		             "Test Accuracy: 92%\n" +
+		             "Epochs: 2,000\n" +
+		             "Loss Function: MSE\n" +
+		             "Optimizer: Gradient Descent (GD)";
+
+		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
+		text(info, 200, 760);
+		pop();
 
 
 

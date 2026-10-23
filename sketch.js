@@ -1,18 +1,21 @@
-/**
- * 28 x 28 Digit Drawing Board (p5.js + Math.js)
- */
 
 let mod_1;
-let model;
-let TT;
-let L1, b1, L2, b2, L3, b3, c;
+let model1;
+let mod_1_flag;
+let img_1;
+
+let mod_2;
+let model2;
+let mod_2_flag;
 
 function preload() {
-  model = loadJSON("mnist_model.json");
-  TT = loadJSON("test.json");
+  model1 = loadJSON("mnist_model_1.json");
+  model2 = loadJSON("mnist_model_2.json");
+  img_1 = loadImage('assets/img_1.jpg'); 
+  img_2 = loadImage('assets/img_2.jpg'); 
 }
 
-let img;
+let background_img;
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -28,10 +31,6 @@ const BACKGROUND_COLOR = "#000000";  // background color
 const DRAW_COLOR = "#ffffff";        // draw color
 const PAGE_COLOR = "#222222";        // canvas color around the board
 const GRID_LINE_COLOR = "rgba(255, 255, 255, 0.08)";
-
-let L1_n = [];
-let L2_n = [];
-let L3_n = [];
 
 // ---------------------------------------------------------------------------
 // State
@@ -77,41 +76,34 @@ function setup() {
   buildCellPositions();
   clearBoard();
 
-  L1 = math.matrix(model.L1);
-  b1 = math.matrix(model.b1);
-  L2 = math.matrix(model.L2);
-  b2 = math.matrix(model.b2);
-  L3 = math.matrix(model.L3);
-  b3 = math.matrix(model.b3);
+  mod_1 = new Model_1(model1);
+  mod_1_flag = true;
+  background_img = img_1;
 
-  img = math.matrix(TT.image);
-  mod_1 = new Model_1(model);
+  mod_2 = new Model_2(model2);
+  mod_2_flag = false;
 }
 
 function draw() {
-  background(PAGE_COLOR);
+  background(background_img);
   push();
   translate(OX, OY);
   scale(S);
 
-  mod_1.draw(getInputVector(), getCellPositions());
+  if(mod_1_flag){
+    mod_1.draw(getInputVector(), getCellPositions());
+    background_img = img_1;
+  }
+
+  if(mod_2_flag){
+    mod_2.draw(getInputVector(), getCellPositions());
+    background_img = img_2;
+  }
+  
 
   push();
   textSize(20); textAlign(CENTER, CENTER); fill(255);
-  text("Press c to clear the Board.", 200, 110);
-  pop();
-
-  push();
-  fill(255);
-  let info = "Trained using NumPy (Python)\n" +
-             "Parameters: 16,330\n" +
-             "Test Accuracy: 92%\n" +
-             "Epochs: 2,000\n" +
-             "Loss Function: MSE\n" +
-             "Optimizer: Gradient Descent (GD)";
-
-  textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-  text(info, 200, 760);
+  text("Press c to clear the Board.\n Press 1 or 2 to change Model.", 200, 110);
   pop();
 
   drawBoard();
@@ -252,4 +244,13 @@ function getCellPositions() {
 
 function keyPressed() {
   if (key === "c" || key === "C") clearBoard();
+  if (key === "2"){
+    mod_2_flag = true;
+    mod_1_flag = false;
+  }
+
+  if (key === "1"){
+    mod_2_flag = false;
+    mod_1_flag = true;
+  }
 }
