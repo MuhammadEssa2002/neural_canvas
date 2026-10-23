@@ -2,20 +2,28 @@
 let mod_1;
 let model1;
 let mod_1_flag;
-let img_1;
 
 let mod_2;
 let model2;
 let mod_2_flag;
+
+let bg_img;
+let bg_img_index;
+let img_1;
+let img_2;
+let img_3;
+let img_4;
 
 function preload() {
   model1 = loadJSON("mnist_model_1.json");
   model2 = loadJSON("mnist_model_2.json");
   img_1 = loadImage('assets/img_1.jpg'); 
   img_2 = loadImage('assets/img_2.jpg'); 
+  img_3 = loadImage('assets/img_3.jpg');
+  img_4 = loadImage('assets/img_4.jpg'); 
 }
 
-let background_img;
+
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -78,32 +86,32 @@ function setup() {
 
   mod_1 = new Model_1(model1);
   mod_1_flag = true;
-  background_img = img_1;
+  bg_img = [img_4,img_1,img_2,img_3,PAGE_COLOR,0];
+  bg_img_index = 0
+
 
   mod_2 = new Model_2(model2);
   mod_2_flag = false;
 }
 
 function draw() {
-  background(background_img);
+  background(bg_img[bg_img_index]);
   push();
   translate(OX, OY);
   scale(S);
 
   if(mod_1_flag){
     mod_1.draw(getInputVector(), getCellPositions());
-    background_img = img_1;
   }
 
   if(mod_2_flag){
     mod_2.draw(getInputVector(), getCellPositions());
-    background_img = img_2;
   }
   
 
   push();
-  textSize(20); textAlign(CENTER, CENTER); fill(255);
-  text("Press c to clear the Board.\n Press 1 or 2 to change Model.", 200, 110);
+  textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(40);
+  text("Press c to clear the Board.\n Press 1 or 2 to change Model.\n Press f to change Background.", 200, 110);
   pop();
 
   drawBoard();
@@ -253,4 +261,14 @@ function keyPressed() {
     mod_2_flag = false;
     mod_1_flag = true;
   }
+
+  if (key === "f" || key === "F"){
+    if(bg_img_index===(bg_img.length-1)){
+      bg_img_index = 0;
+    }else{
+      bg_img_index++;
+    }
+  }
+
+
 }
