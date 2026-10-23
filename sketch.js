@@ -19,9 +19,9 @@ let img;
 // ---------------------------------------------------------------------------
 const ROWS = 28;                     // number of rows
 const COLS = 28;                     // number of columns
-const CELL_SIZE = 15;                // width and height of each square cell (px)
-let BOARD_X = 50;                    // x position of the board's top-left corner
-let BOARD_Y = 100;                   // y position of the board's top-left corner (dynamic)
+//const CELL_SIZE = 15;                // width and height of each square cell (px)
+//let BOARD_X = 50;                    // x position of the board's top-left corner
+//let BOARD_Y = 100;                   // y position of the board's top-left corner (dynamic)
 const BRUSH_SIZE = 1.5;              // brush radius measured in cells
 const BRUSH_STEP = 0.25;             // stroke sampling distance in cells
 const BACKGROUND_COLOR = "#000000";  // background color
@@ -46,18 +46,35 @@ let cellPositions = [];
 // ---------------------------------------------------------------------------
 // p5.js lifecycle
 // ---------------------------------------------------------------------------
+
+const DESIGN_W = 1600;
+const DESIGN_H = 900;
+let S = 1, OX = 0, OY = 0;
+
+const CELL_SIZE = 15;
+const BOARD_X = 80;
+const BOARD_Y = 240;
+
+function computeScale() {
+  S  = min(width / DESIGN_W, height / DESIGN_H);
+  OX = (width  - DESIGN_W * S) / 2;
+  OY = (height - DESIGN_H * S) / 2;
+}
+
+// mouse position in design coordinates
+function mx() { return (mouseX - OX) / S; }
+function my() { return (mouseY - OY) / S; }
+
+
 function setup() {
   const canvas = createCanvas(windowWidth, windowHeight);
-  canvas.style("touch-action", "none"); 
-  
-  // Normalizes pixel scaling across Linux and high-DPI Mac Retina displays
-  pixelDensity(1); 
+  canvas.style("touch-action", "none");
+  pixelDensity(window.devicePixelRatio || 1);   // sharp on Retina
 
   bgCol = color(BACKGROUND_COLOR);
   fgCol = color(DRAW_COLOR);
-
-  // Initialize all responsive positions and cell grid mappings
-  updateLayout();
+  computeScale();
+  buildCellPositions();
   clearBoard();
 
   L1 = math.matrix(model.L1);
@@ -73,19 +90,18 @@ function setup() {
 
 function draw() {
   background(PAGE_COLOR);
-  fill(255);
+  push();
+  translate(OX, OY);
+  scale(S);
+
   mod_1.draw(getInputVector(), getCellPositions());
 
   push();
-  textSize(20);
-  textAlign(CENTER, CENTER);
-  fill(255);
-  text("Press c to clear the Board.", width / 9, height / 8);
+  textSize(20); textAlign(CENTER, CENTER); fill(255);
+  text("Press c to clear the Board.", 180, 110);
   pop();
 
   push();
-  textSize(15);
-  textAlign(CENTER, CENTER);
   fill(255);
   let info = "Trained using NumPy (Python)\n" +
              "Parameters: 16,330\n" +
@@ -94,8 +110,8 @@ function draw() {
              "Loss Function: MSE\n" +
              "Optimizer: Gradient Descent (GD)";
 
-  textLeading(25);
-  text(info, width / 9, height / 1.25);
+  textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
+  text(info, 180, 720);
   pop();
 
   drawBoard();
@@ -105,41 +121,6 @@ function draw() {
 /**
  * Centralized layout calculator to keep UI elements responsive
  */
-function updateLayout() {
-  BOARD_Y = height * 0.25; // Position board nicely relative to screen height
-  BOARD_X = width * 0.05;  // Dynamic left margin
-
-  // Recompute neural network node layouts proportionally
-  L1_n = [];
-  L2_n = [];
-  L3_n = [];
-
-  let l1_y = height * 0.12;
-  let l2_y = height * 0.12;
-  let l3_y = height * 0.22;
-
-  let vSpacing1 = height * 0.038;
-  let vSpacing2 = height * 0.038;
-  let vSpacing3 = height * 0.055;
-
-  for (let i = 0; i < 20; i++) {
-    L1_n.push([width * 0.38, l1_y]);
-    l1_y += vSpacing1;
-  }
-
-  for (let i = 0; i < 20; i++) {
-    L2_n.push([width * 0.52, l2_y]);
-    l2_y += vSpacing2;
-  }
-
-  for (let i = 0; i < 10; i++) {
-    L3_n.push([width * 0.65, l3_y]);
-    l3_y += vSpacing3;
-  }
-
-  // Re-build cell hitbox boundaries based on new layout coordinates
-  buildCellPositions();
-}
 
 // ---------------------------------------------------------------------------
 // Rendering
@@ -165,20 +146,18 @@ function drawBoard() {
 // Mouse / touch input
 // ---------------------------------------------------------------------------
 function mousePressed() {
-  if (isInsideBoard(mouseX, mouseY)) {
+  if (isInsideBoard(mx(), my())) {
     isDrawing = true;
-    lastX = mouseX;
-    lastY = mouseY;
-    stampBrush(mouseX, mouseY); 
+    lastX = mx(); lastY = my();
+    stampBrush(lastX, lastY);
   }
 }
 
 function mouseDragged() {
   if (!isDrawing) return;
-  drawStroke(lastX, lastY, mouseX, mouseY);
-  lastX = mouseX;
-  lastY = mouseY;
-  return false; 
+  drawStroke(lastX, lastY, mx(), my());
+  lastX = mx(); lastY = my();
+  return false;
 }
 
 function mouseReleased() {

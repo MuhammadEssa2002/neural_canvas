@@ -21,24 +21,10 @@ class Model_1{
 		this.ang = 0;
 		this.r = 20;
 
-	  this.l1_y = 50
-	  this.l2_y = 50
-	  this.l3_y = 150
-
-	  for(let i=0;i<20;i++){
-	    this.L1_n.push([width/2.8,this.l1_y])
-	    this.l1_y += 42;
-	  }
-
-	  for(let i=0;i<20;i++){
-	    this.L2_n.push([width/1.8,this.l2_y])
-	    this.l2_y += 42;
-	  }
-
-	  for(let i=0;i<10;i++){
-	    this.L3_n.push([width/1.4,this.l3_y])
-	    this.l3_y += 60;
-	  }
+	  let y1 = 60, y2 = 60, y3 = 150;
+	  for (let i = 0; i < 20; i++) { this.L1_n.push([610,  y1]); y1 += 40; }
+	  for (let i = 0; i < 20; i++) { this.L2_n.push([830,  y2]); y2 += 40; }
+	  for (let i = 0; i < 10; i++) { this.L3_n.push([1040, y3]); y3 += 65; }
 
 	}
 
