@@ -23,8 +23,8 @@ class Model_1{
 
 	  let y1 = 60, y2 = 60, y3 = 150;
 	  for (let i = 0; i < 20; i++) { this.L1_n.push([610,  y1]); y1 += 40; }
-	  for (let i = 0; i < 20; i++) { this.L2_n.push([830,  y2]); y2 += 40; }
-	  for (let i = 0; i < 10; i++) { this.L3_n.push([1040, y3]); y3 += 65; }
+	  for (let i = 0; i < 20; i++) { this.L2_n.push([980,  y2]); y2 += 40; }
+	  for (let i = 0; i < 10; i++) { this.L3_n.push([1340, y3]); y3 += 65; }
 
 	}
 
@@ -172,12 +172,12 @@ class Model_1{
 		drawingContext.shadowOffsetX = this.r*sin(this.ang);
 		drawingContext.shadowOffsetY = this.r*cos(this.ang);
   		fill(50);
-  		rect(width/1.2,height/2,100,100);
+  		rect(1500,450,100,100);
   		if(boardMatrix_not_empty){
 		    fill(255);
 		    textSize(100);
 		    textAlign(CENTER, CENTER);
-		    text(this.highestIndex,width/1.2,height/2);
+		    text(this.highestIndex,1500,450);
 		}
 	    pop();
 

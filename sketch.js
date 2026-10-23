@@ -52,7 +52,7 @@ const DESIGN_H = 900;
 let S = 1, OX = 0, OY = 0;
 
 const CELL_SIZE = 15;
-const BOARD_X = 80;
+const BOARD_X = 1;
 const BOARD_Y = 240;
 
 function computeScale() {
@@ -98,7 +98,7 @@ function draw() {
 
   push();
   textSize(20); textAlign(CENTER, CENTER); fill(255);
-  text("Press c to clear the Board.", 180, 110);
+  text("Press c to clear the Board.", 200, 110);
   pop();
 
   push();
@@ -111,7 +111,7 @@ function draw() {
              "Optimizer: Gradient Descent (GD)";
 
   textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-  text(info, 180, 720);
+  text(info, 200, 760);
   pop();
 
   drawBoard();
