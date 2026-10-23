@@ -101,13 +101,6 @@ function draw() {
   drawBoard();
 }
 
-/**
- * Handles screen resize gracefully across all devices (Mac, Linux, Windows)
- */
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  updateLayout(); // Recalculate layout nodes and cell positions on resize
-}
 
 /**
  * Centralized layout calculator to keep UI elements responsive
