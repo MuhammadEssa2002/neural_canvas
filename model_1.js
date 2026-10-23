@@ -115,7 +115,7 @@ class Model_1{
 		stroke(100,100,255);
 		strokeWeight(1);
 		fill(c1*100,c1*100,c1*255);
-		rect(this.L1_n[i][0],this.L1_n[i][1],60,30);
+		rect(this.L1_n[i][0],this.L1_n[i][1],60,30,20,0,20,0);
 
 		  push();
 		  textSize(15);
@@ -133,7 +133,7 @@ class Model_1{
 		  stroke(255,209,209);
 		  strokeWeight(1);
 		  fill(colo*255,colo*209,colo*209);
-		  rect(this.L2_n[i][0],this.L2_n[i][1],60,30);
+		  rect(this.L2_n[i][0],this.L2_n[i][1],60,30,0,20,0,20);
 
 		  push();
 		  textSize(15);
@@ -151,7 +151,7 @@ class Model_1{
 		  stroke(255,62,87);
 		  strokeWeight(1);
 		  fill(colo*255,colo*62,colo*87);
-		  rect(this.L3_n[i][0],this.L3_n[i][1],60,30);
+		  rect(this.L3_n[i][0],this.L3_n[i][1],60,30,0,20,20,20);
 
 		  push();
 		  textSize(15);
@@ -172,14 +172,48 @@ class Model_1{
 		drawingContext.shadowOffsetX = this.r*sin(this.ang);
 		drawingContext.shadowOffsetY = this.r*cos(this.ang);
   		fill(50);
-  		rect(1500,450,100,100);
+  		stroke(252, 173, 56);
+  		strokeWeight(2);
+  		rect(1500,445,100,100,20,0,20,20);
   		if(boardMatrix_not_empty){
 		    fill(255);
 		    textSize(100);
+		    stroke(252, 173, 56);
+  			strokeWeight(5);
 		    textAlign(CENTER, CENTER);
 		    text(this.highestIndex,1500,450);
 		}
 	    pop();
+
+	    push();
+	    textSize(20);
+	    fill(255);
+		textAlign(CENTER, CENTER);
+		text("Hidden Layer: 1",617,870);
+	    pop();
+
+	    push();
+	    textSize(20);
+	    fill(255);
+		textAlign(CENTER, CENTER);
+		text("Hidden Layer: 2",990,870);
+	    pop();
+
+	    push();
+	    textSize(20);
+	    fill(255);
+		textAlign(CENTER, CENTER);
+		text("Output Layer",1340,790);
+	    pop();
+
+	    push();
+	    textSize(20);
+	    fill(255);
+		textAlign(CENTER, CENTER);
+		text("Prediction",1500,540);
+	    pop();
+
+
 
 	    this.ang += 0.03
 
