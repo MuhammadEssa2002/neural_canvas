@@ -13,6 +13,7 @@ let img_1;
 let img_2;
 let img_3;
 let img_4;
+let img_5;
 
 function preload() {
   model1 = loadJSON("mnist_model_1.json");
@@ -21,6 +22,7 @@ function preload() {
   img_2 = loadImage('assets/img_2.jpg'); 
   img_3 = loadImage('assets/img_3.jpg');
   img_4 = loadImage('assets/img_4.jpg'); 
+  img_5 = loadImage('assets/img_5.jpg'); 
 }
 
 
@@ -86,7 +88,7 @@ function setup() {
 
   mod_1 = new Model_1(model1);
   mod_1_flag = true;
-  bg_img = [img_4,img_1,img_2,img_3,PAGE_COLOR,0];
+  bg_img = [img_4,img_5,img_1,img_2,img_3,PAGE_COLOR,0];
   bg_img_index = 0
 
 
