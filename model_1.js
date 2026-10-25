@@ -28,7 +28,7 @@ class Model_1{
 
 	}
 
-	draw(X1,cell_pos){
+	draw(X1,cell_pos,show_shadow,show_lines){
 
 		let arr = math.flatten(X1).toArray();
 
@@ -48,7 +48,7 @@ class Model_1{
 		  );
 		this.Z2_data = this.Z2.toArray();
 		this.A2 = math.map(this.Z2, x => Math.max(0, x));
-		this.A2_data = this.A1.toArray();
+		this.A2_data = this.A2.toArray();
 
 		this.Z3 = math.add(
 		  math.multiply(this.L3, this.A2),
@@ -64,7 +64,7 @@ class Model_1{
 
 
 
-		if(boardMatrix_not_empty){
+		if(boardMatrix_not_empty && show_lines){
 			push();
 			for(let j=0;j<this.L1_n.length;j++){
 				for(let i=0;i<783;i += 15){
@@ -104,10 +104,12 @@ class Model_1{
 
 
 		push();
-		drawingContext.shadowBlur = 10;
-		drawingContext.shadowColor = color(0);
-		drawingContext.shadowOffsetX = this.r*sin(this.ang);
-		drawingContext.shadowOffsetY = this.r*cos(this.ang);
+		if(show_shadow){
+			drawingContext.shadowBlur = 10;
+			drawingContext.shadowColor = color(0);
+			drawingContext.shadowOffsetX = this.r*sin(this.ang);
+			drawingContext.shadowOffsetY = this.r*cos(this.ang);
+		}
 		push();
 		for(let i=0;i<this.L1_n.length;i++){
 		rectMode(CENTER,CENTER);
@@ -129,7 +131,7 @@ class Model_1{
 		push();
 		for(let i=0;i<this.L2_n.length;i++){
 		  rectMode(CENTER,CENTER);
-		  let colo = map(this.A2_data[i][0],0,3,0,1);
+		  let colo = map(this.A2_data[i][0],0,2.5,0,1);
 		  stroke(255,209,209);
 		  strokeWeight(1);
 		  fill(colo*255,colo*209,colo*209);
@@ -147,7 +149,7 @@ class Model_1{
 		push();
 		for(let i=0;i<this.L3_n.length;i++){
 		  rectMode(CENTER,CENTER);
-		  let colo = map(this.Z3_data[i][0],0,6,0,1);
+		  let colo = map(this.Z3_data[i][0],0,0.6,0,1);
 		  stroke(255,62,87);
 		  strokeWeight(1);
 		  fill(colo*255,colo*62,colo*87);
@@ -167,10 +169,12 @@ class Model_1{
 
 		push()
 		rectMode(CENTER,CENTER);
-		drawingContext.shadowBlur = 10;
-		drawingContext.shadowColor = color(0);
-		drawingContext.shadowOffsetX = this.r*sin(this.ang);
-		drawingContext.shadowOffsetY = this.r*cos(this.ang);
+		if(show_shadow){
+			drawingContext.shadowBlur = 10;
+			drawingContext.shadowColor = color(0);
+			drawingContext.shadowOffsetX = this.r*sin(this.ang);
+			drawingContext.shadowOffsetY = this.r*cos(this.ang);
+		}
   		fill(50);
   		stroke(252, 173, 56);
   		strokeWeight(2);

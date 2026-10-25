@@ -25,6 +25,9 @@ function preload() {
   img_5 = loadImage('assets/img_5.jpg'); 
 }
 
+let show_shadow = true;
+let show_lines = true;
+
 
 
 // ---------------------------------------------------------------------------
@@ -103,17 +106,17 @@ function draw() {
   scale(S);
 
   if(mod_1_flag){
-    mod_1.draw(getInputVector(), getCellPositions());
+    mod_1.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
   }
 
   if(mod_2_flag){
-    mod_2.draw(getInputVector(), getCellPositions());
+    mod_2.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
   }
   
 
   push();
   textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(40);
-  text("Press c to clear the Board.\n Press 1 or 2 to change Model.\n Press f to change Background.", 200, 110);
+  text("Press C to clear the Board.\t\t||\t\tPress 1 or 2 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 480, 10);
   pop();
 
   drawBoard();
@@ -270,6 +273,14 @@ function keyPressed() {
     }else{
       bg_img_index++;
     }
+  }
+
+  if (key==="s" || key ==="S"){
+    show_shadow = !(show_shadow);
+  }
+
+  if (key==="l" || key ==="L"){
+    show_lines = !(show_lines);
   }
 
 
