@@ -115,8 +115,8 @@ function draw() {
   
 
   push();
-  textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(40);
-  text("Press C to clear the Board.\t\t||\t\tPress 1 or 2 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 480, 10);
+  textSize(15); fill(255); textLeading(40);
+  text("Press C to clear the Board.\t\t||\t\tPress 1 or 2 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
   pop();
 
   drawBoard();
