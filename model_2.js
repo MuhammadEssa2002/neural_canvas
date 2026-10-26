@@ -203,7 +203,7 @@ class Model_2{
 		    stroke(252, 173, 56);
   			strokeWeight(5);
 		    textAlign(CENTER, CENTER);
-		    text(this.highestIndex,1500,450);
+		    text(this.highestIndex,1500,430);
 		}
 	    pop();
 
@@ -246,6 +246,12 @@ class Model_2{
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
 		text(info, 200, 760);
+		pop();
+
+		push();
+		fill(255);
+		textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(25);
+		text("Western Arabic numerals", 200, 180);
 		pop();
 
 

@@ -7,6 +7,10 @@ let mod_2;
 let model2;
 let mod_2_flag;
 
+let mod_3;
+let model3;
+let mod_3_flag;
+
 let bg_img;
 let bg_img_index;
 let img_1;
@@ -15,9 +19,15 @@ let img_3;
 let img_4;
 let img_5;
 
+let default_font;
+let arabic_font;
+
 function preload() {
   model1 = loadJSON("mnist_model_1.json");
   model2 = loadJSON("mnist_model_2.json");
+  model3 = loadJSON("mnist_model_3.json");
+  default_font = loadFont("fonts/Roboto-Regular.ttf");
+  arabic_font = loadFont("fonts/NotoNaskhArabic-Regular.ttf");
   img_1 = loadImage('assets/img_1.jpg'); 
   img_2 = loadImage('assets/img_2.jpg'); 
   img_3 = loadImage('assets/img_3.jpg');
@@ -38,7 +48,7 @@ const COLS = 28;                     // number of columns
 //const CELL_SIZE = 15;                // width and height of each square cell (px)
 //let BOARD_X = 50;                    // x position of the board's top-left corner
 //let BOARD_Y = 100;                   // y position of the board's top-left corner (dynamic)
-const BRUSH_SIZE = 1.5;              // brush radius measured in cells
+const BRUSH_SIZE = 1;              // brush radius measured in cells
 const BRUSH_STEP = 0.25;             // stroke sampling distance in cells
 const BACKGROUND_COLOR = "#000000";  // background color
 const DRAW_COLOR = "#ffffff";        // draw color
@@ -89,14 +99,19 @@ function setup() {
   buildCellPositions();
   clearBoard();
 
-  mod_1 = new Model_1(model1);
-  mod_1_flag = true;
+  textFont(default_font);
+
   bg_img = [img_4,img_5,img_1,img_2,img_3,PAGE_COLOR,0];
   bg_img_index = 0
 
+  mod_1 = new Model_1(model1);
+  mod_1_flag = true;
 
   mod_2 = new Model_2(model2);
   mod_2_flag = false;
+
+  mod_3 = new Model_3(model3);
+  mod_3_flag = false;
 }
 
 function draw() {
@@ -112,11 +127,15 @@ function draw() {
   if(mod_2_flag){
     mod_2.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
   }
+
+  if(mod_3_flag){
+    mod_3.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
+  }
   
 
   push();
   textSize(15); fill(255); textLeading(40);
-  text("Press C to clear the Board.\t\t||\t\tPress 1 or 2 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
+  text("Press C to clear the Board.\t\t||\t\tPress 1 to 3 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
   pop();
 
   drawBoard();
@@ -257,14 +276,23 @@ function getCellPositions() {
 
 function keyPressed() {
   if (key === "c" || key === "C") clearBoard();
+  
   if (key === "2"){
     mod_2_flag = true;
     mod_1_flag = false;
+    mod_3_flag = false
   }
 
   if (key === "1"){
     mod_2_flag = false;
     mod_1_flag = true;
+    mod_3_flag = false;
+  }
+
+  if (key === "3"){
+    mod_2_flag = false;
+    mod_1_flag = false;
+    mod_3_flag = true;
   }
 
   if (key === "f" || key === "F"){
