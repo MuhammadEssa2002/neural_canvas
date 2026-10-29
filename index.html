@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Neural Canvas</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- p5.js -->
@@ -11,30 +13,91 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjs@14.0.1/lib/browser/math.js"></script>
 
   <style>
-  body {
-    margin: 0;
-    background: #171717;
-    color: white;
-    font-family: Arial, sans-serif;
-  }
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      background: #222;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
 
-  h1 {
-    font-size: 24px;
-  }
+    canvas {
+      display: block;
+    }
 
-  html, body {
-    margin: 0;
-    overflow: hidden;
-    background: #222;
-  }
+    /* Loading screen */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      background: #171717;
+      transition: opacity 0.4s ease;
+    }
 
-  canvas {
-    display: block;
-  }
-</style>
+    #loading-screen img {
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
 
+    #loading-screen p {
+      color: #aaa;
+      font-size: 25px;
+      letter-spacing: 3px;
+    }
+
+    .loading-bar {
+      width: 450px;
+      height: 4px;
+      overflow: hidden;
+      background: #383838;
+      border-radius: 10px;
+    }
+
+    .loading-bar::after {
+      content: "";
+      display: block;
+      width: 40%;
+      height: 100%;
+      background: #fff;
+      animation: loading 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.06); opacity: 0.7; }
+    }
+
+    @keyframes loading {
+      from { transform: translateX(-110%); }
+      to { transform: translateX(375%); }
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #loading-screen.removed {
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
+  <!-- Loading overlay -->
+  <div id="loading-screen">
+    <img src="assets/logo.png" alt="Neural Canvas Logo">
+    <p>Loading Neural Canvas...</p>
+    <div class="loading-bar"></div>
+  </div>
+
   <main></main>
 
   <!-- Your p5.js sketch -->
@@ -42,5 +105,18 @@
   <script src="model_1.js"></script>
   <script src="model_2.js"></script>
   <script src="model_3.js"></script>
+
+  <script>
+    function hideLoadingScreen() {
+      const screen = document.getElementById("loading-screen");
+      if (!screen) return;
+
+      screen.classList.add("hidden");
+
+      setTimeout(() => {
+        screen.classList.add("removed");
+      }, 400);
+    }
+  </script>
 </body>
 </html>

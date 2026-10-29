@@ -112,6 +112,7 @@ function setup() {
 
   mod_3 = new Model_3(model3);
   mod_3_flag = false;
+  hideLoadingScreen();
 }
 
 function draw() {

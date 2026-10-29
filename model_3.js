@@ -279,7 +279,7 @@ class Model_3{
 		             "Test Accuracy: 96%\n" +
 		             "Epochs: 2,000\n" +
 		             "Loss Function: Cross-Entropy\n" +
-		             "Optimizer: Gradient Descent (GD)";
+		             "Optimizer: Batch Gradient Descent (BGD)";
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
 		text(info, 200, 760);

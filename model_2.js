@@ -242,16 +242,10 @@ class Model_2{
 		             "Test Accuracy: 96%\n" +
 		             "Epochs: 2,000\n" +
 		             "Loss Function: Cross-Entropy\n" +
-		             "Optimizer: Gradient Descent (GD)";
+		             "Optimizer: Batch Gradient Descent (BGD)";
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
 		text(info, 200, 760);
-		pop();
-
-		push();
-		fill(255);
-		textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text("Western Arabic numerals", 200, 180);
 		pop();
 
 
