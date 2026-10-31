@@ -224,7 +224,7 @@ class Model_1{
 		             "Test Accuracy: 92%\n" +
 		             "Epochs: 2,000\n" +
 		             "Loss Function: MSE\n" +
-		             "Optimizer: Batch Gradient Descent (BGD)";
+		             "Optimizer: Vanilla Gradient Descent (BGD)";
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
 		text(info, 200, 760);
