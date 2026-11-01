@@ -89,11 +89,12 @@ Everything runs client-side using [p5.js](https://p5js.org/) for rendering and [
 * Draw digits on a 28×28 canvas with a soft, anti-aliased brush (MNIST-style input)
 * Live forward pass: every neuron's activation is displayed and color-coded
 * Connections light up according to the input pixels and layer activations
-* Three pre-trained models you can switch between instantly, including one for Eastern Arabic-Indic digits (٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩)
+* Four pre-trained models you can switch between instantly, including one for Eastern Arabic-Indic digits (٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩) and one for Persian (Farsi) digits (۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹)
 * Toggleable neuron shadows and network connection lines
 * Multiple selectable backgrounds
 * Responsive canvas that scales to the window while preserving the layout
 * Mouse and touch support
+* Animated loading screen while the models, fonts and images are being loaded
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -101,21 +102,22 @@ Everything runs client-side using [p5.js](https://p5js.org/) for rendering and [
 
 ### Models
 
-All models are fully connected networks using ReLU activations in the hidden layers and trained with plain gradient descent for 2,000 epochs.
+All models are fully connected networks using ReLU activations in the hidden layers. Models 1 to 3 were trained with plain gradient descent for 2,000 epochs, while Model 4 was trained with mini-batch gradient descent with momentum for 200 epochs.
 
-| | Model 1 | Model 2 | Model 3 |
-|---|---|---|---|
-| Digit set | Western Arabic numerals (0-9) | Western Arabic numerals (0-9) | Eastern Arabic-Indic numerals (٠-٩) |
-| Architecture | 784 → 20 → 20 → 10 | 784 → 40 → 40 → 10 | 784 → 20 → 20 → 15 → 10 |
-| Hidden layers | 2 | 2 | 3 |
-| Parameters | 16,330 | 33,450 | 16,595 |
-| Output | Raw scores | Softmax probabilities | Softmax probabilities |
-| Loss function | Mean Squared Error | Cross-Entropy | Cross-Entropy |
-| Optimizer | Vanilla Gradient Descent | Vanilla Gradient Descent | Vanilla Gradient Descent |
-| Test accuracy | 92% | 96% | 96% |
-| Training | NumPy (Python) | NumPy (Python) | JAX (Python) |
+| | Model 1 | Model 2 | Model 3 | Model 4 |
+|---|---|---|---|---|
+| Digit set | Western Arabic numerals (0-9) | Western Arabic numerals (0-9) | Eastern Arabic-Indic numerals (٠-٩) | Persian (Farsi) numerals (۰-۹) |
+| Architecture | 784 → 20 → 20 → 10 | 784 → 40 → 40 → 10 | 784 → 20 → 20 → 15 → 10 | 784 → 20 → 20 → 15 → 10 |
+| Hidden layers | 2 | 2 | 3 | 3 |
+| Parameters | 16,330 | 33,450 | 16,595 | 16,595 |
+| Output | Raw scores | Softmax probabilities | Softmax probabilities | Softmax probabilities |
+| Loss function | Mean Squared Error | Cross-Entropy | Cross-Entropy | Cross-Entropy |
+| Optimizer | Vanilla Gradient Descent | Vanilla Gradient Descent | Vanilla Gradient Descent | Mini-batch Gradient Descent with Momentum |
+| Epochs | 2,000 | 2,000 | 2,000 | 200 |
+| Test accuracy | 92% | 96% | 96% | 96% |
+| Training | NumPy (Python) | NumPy (Python) | JAX (Python) | JAX (Python) |
 
-The predicted digit is the output neuron with the highest value. In the visualization, Model 2 draws its hidden layers as two columns of neurons to represent the wider layers, and Model 3 shows the additional third hidden layer and renders its prediction in Eastern Arabic-Indic script using the Noto Naskh Arabic font.
+The predicted digit is the output neuron with the highest value. In the visualization, Model 2 draws its hidden layers as two columns of neurons to represent the wider layers, and Model 3 shows the additional third hidden layer and renders its prediction in Eastern Arabic-Indic script using the Noto Naskh Arabic font. Model 4 uses the same layer layout as Model 3 but renders its prediction in Persian (Farsi) script using the Parastoo font, which matters because the Persian glyphs for 4, 5 and 6 differ from the Arabic-Indic ones.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -123,7 +125,7 @@ The predicted digit is the output neuron with the highest value. In the visualiz
 
 ### Accuracy and Limitations
 
-Models 1 and 2 were trained on the MNIST handwritten digit dataset, and Model 3 was trained on a handwritten Eastern Arabic-Indic digit dataset in the same 28×28 format. The test accuracies reported above (roughly 92% to 96%) were measured on held-out test images from those datasets.
+Models 1 and 2 were trained on the MNIST handwritten digit dataset, Model 3 was trained on a handwritten Eastern Arabic-Indic digit dataset, and Model 4 was trained on a handwritten Persian (Farsi) digit dataset, all in the same 28×28 format. The test accuracies reported above (roughly 92% to 96%) were measured on held-out test images from those datasets.
 
 Real-time drawing on the board can behave differently from those test results. Digits drawn with a mouse or finger are often thicker, thinner, smaller, larger or more off-center than the images the models were trained on, and the brush has its own look compared to scanned handwriting. Because of this, the models may produce unexpected predictions or fluctuating values while you draw, and they will often be less accurate in the browser than their test accuracy suggests. This project is meant as a visual way to understand how a network works, not as a production-grade digit recognizer.
 
@@ -136,9 +138,9 @@ For best results, draw the digit large, centered and with a single clear stroke,
 ### How It Works
 
 1. **Input.** The 28×28 board is stored as a Math.js matrix with values in `[0, 1]` and flattened into a 784×1 vector.
-2. **Forward pass.** Each frame computes `Z = W·A + b` for every layer, applying ReLU in the hidden layers. Models 2 and 3 additionally apply softmax to the output layer.
+2. **Forward pass.** Each frame computes `Z = W·A + b` for every layer, applying ReLU in the hidden layers. Models 2, 3 and 4 additionally apply softmax to the output layer.
 3. **Rendering.** Neurons are drawn as rounded rectangles whose fill intensity reflects their activation, with the numeric value printed inside. Connection opacity is driven by input pixel intensity and layer outputs. Everything is drawn in a fixed 1600×900 design space that is scaled to fit the window.
-4. **Prediction.** The index of the largest output value is shown in the prediction box (as an Eastern Arabic-Indic digit for Model 3).
+4. **Prediction.** The index of the largest output value is shown in the prediction box (as an Eastern Arabic-Indic digit for Model 3 and a Persian digit for Model 4).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -209,6 +211,7 @@ _Try the [live demo](https://muhammadessa2002.github.io/neural_canvas/) to see i
 | `1` | Switch to Model 1 |
 | `2` | Switch to Model 2 |
 | `3` | Switch to Model 3 |
+| `4` | Switch to Model 4 |
 | `f` | Cycle through backgrounds |
 | `s` | Turn neuron shadows on / off |
 | `l` | Turn network connection lines on / off |
@@ -217,16 +220,23 @@ _Try the [live demo](https://muhammadessa2002.github.io/neural_canvas/) to see i
 
 ```
 .
-├── index.html            # Page setup and script loading
-├── sketch.js             # p5.js sketch: drawing board, input handling, scaling, controls
-├── model_1.js            # Model 1 (MSE) forward pass and visualization
-├── model_2.js            # Model 2 (softmax / cross-entropy) forward pass and visualization
-├── model_3.js            # Model 3 (Eastern Arabic-Indic digits, 3 hidden layers) forward pass and visualization
-├── mnist_model_1.json    # Trained weights and biases for Model 1
-├── mnist_model_2.json    # Trained weights and biases for Model 2
-├── mnist_model_3.json    # Trained weights and biases for Model 3
-├── fonts/                # Roboto-Regular.ttf, NotoNaskhArabic-Regular.ttf
-├── assets/               # Background images (img_1.jpg ... img_5.jpg)
+├── index.html                  # Page setup, loading screen and script loading
+├── sketch.js                   # p5.js sketch: drawing board, input handling, scaling, controls
+├── models/
+│   ├── model_1/
+│   │   ├── model_1.js          # Model 1 (MSE) forward pass and visualization
+│   │   └── mnist_model_1.json  # Trained weights and biases for Model 1
+│   ├── model_2/
+│   │   ├── model_2.js          # Model 2 (softmax / cross-entropy) forward pass and visualization
+│   │   └── mnist_model_2.json  # Trained weights and biases for Model 2
+│   ├── model_3/
+│   │   ├── model_3.js          # Model 3 (Eastern Arabic-Indic digits, 3 hidden layers)
+│   │   └── mnist_model_3.json  # Trained weights and biases for Model 3
+│   └── model_4/
+│       ├── model_4.js          # Model 4 (Persian digits, 3 hidden layers, momentum training)
+│       └── mnist_model_4.json  # Trained weights and biases for Model 4
+├── fonts/                      # Roboto-Regular.ttf, NotoNaskhArabic-Regular.ttf, Parastoo-Regular.ttf
+├── assets/                     # Logo and background images (logo.png, img_1.jpg ... img_5.jpg)
 └── LICENSE
 ```
 
@@ -242,7 +252,7 @@ Each JSON file contains the weights and biases of every layer. Models 1 and 2 ha
 }
 ```
 
-Model 3 has a fourth layer:
+Models 3 and 4 have a fourth layer:
 
 ```json
 {
@@ -284,9 +294,9 @@ If you want to train a model on your own data, such as MNIST digits again with a
    - Use no more than 3 hidden layers.
    - Use no more than 40 neurons in each hidden layer.
    - Implement the forward pass with plain matrix multiplication (`Z = W·A + b`), the same way the existing models do in Math.js.
-2. Fork the repository and add your JSON file (for example `mnist_model_4.json`) to the project root.
-3. Create a new `model_4.js` by copying the closest existing model file (`model_1.js`, `model_2.js` or `model_3.js`) and adjusting the layer sizes, neuron positions, labels and info text to match your network. If your output labels are not digits, map the predicted index to your own characters, as `model_3.js` does with `toArabicDigit`. Include any font your script needs in the `fonts/` folder.
-4. Register the model in `index.html` (script tag), and in `sketch.js` (load the JSON in `preload()`, create the model in `setup()`, call its `draw()` in `draw()`, and add a key in `keyPressed()` to switch to it).
+2. Fork the repository and add your JSON file (for example `mnist_model_5.json`) to a new `models/model_5/` folder.
+3. Create a new `model_5.js` in the same folder by copying the closest existing model file (`model_1.js`, `model_2.js`, `model_3.js` or `model_4.js`) and adjusting the layer sizes, neuron positions, labels and info text to match your network. If your output labels are not digits, map the predicted index to your own characters, as `model_3.js` does with `toArabicDigit` and `model_4.js` does with `toFarsiDigit`. Include any font your script needs in the `fonts/` folder.
+4. Register the model in `index.html` (script tag), and in `sketch.js` (load the JSON in `preload()`, create the model and its flag in `setup()`, call its `draw()` in `draw()`, and add a key in `keyPressed()` to switch to it, making sure the other models' flags are turned off).
 5. Update the [Models](#models) table in this README with your model's architecture, parameter count, loss function, optimizer and test accuracy.
 6. Open a pull request with a short description of the dataset and how you trained the model.
 
@@ -338,6 +348,8 @@ Project Link: [https://github.com/MuhammadEssa2002/neural_canvas](https://github
 * [NumPy](https://numpy.org/)
 * [JAX](https://github.com/jax-ml/jax)
 * [Noto Naskh Arabic font](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic)
+* [Parastoo font](https://fonts.google.com/specimen/Parastoo)
+* [Roboto font](https://fonts.google.com/specimen/Roboto)
 * [MNIST handwritten digit database](http://yann.lecun.com/exdb/mnist/)
 * [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 * [Img Shields](https://shields.io)

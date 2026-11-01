@@ -200,7 +200,7 @@ class Model_3{
 		  stroke(76, 35, 101);
 		  strokeWeight(1);
 		  fill(colo*76,colo*35,colo*101);
-		  rect(this.L4_n[i][0],this.L4_n[i][1],40,30,0,20,20,20);
+		  rect(this.L4_n[i][0],this.L4_n[i][1],40,30,5,20,0,20);
 
 		  push();
 		  textSize(10);
@@ -288,7 +288,7 @@ class Model_3{
 		push();
 		fill(255);
 		textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text("Eastern Arabic-Indic numerals", 200, 180);
+		text("Arabic Digits", 200, 180);
 		pop();
 
 

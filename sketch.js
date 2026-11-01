@@ -11,6 +11,10 @@ let mod_3;
 let model3;
 let mod_3_flag;
 
+let mod_4;
+let model4;
+let mod_4_flag;
+
 let bg_img;
 let bg_img_index;
 let img_1;
@@ -23,11 +27,18 @@ let default_font;
 let arabic_font;
 
 function preload() {
-  model1 = loadJSON("mnist_model_1.json");
-  model2 = loadJSON("mnist_model_2.json");
-  model3 = loadJSON("mnist_model_3.json");
+  //Models
+  model1 = loadJSON("models/model_1/mnist_model_1.json");
+  model2 = loadJSON("models/model_2/mnist_model_2.json");
+  model3 = loadJSON("models/model_3/mnist_model_3.json");
+  model4 = loadJSON("models/model_4/mnist_model_4.json");
+
+  //fonts
   default_font = loadFont("fonts/Roboto-Regular.ttf");
   arabic_font = loadFont("fonts/NotoNaskhArabic-Regular.ttf");
+  farsi_font = loadFont("fonts/Parastoo-Regular.ttf");
+
+  //Images
   img_1 = loadImage('assets/img_1.jpg'); 
   img_2 = loadImage('assets/img_2.jpg'); 
   img_3 = loadImage('assets/img_3.jpg');
@@ -48,8 +59,8 @@ const COLS = 28;                     // number of columns
 //const CELL_SIZE = 15;                // width and height of each square cell (px)
 //let BOARD_X = 50;                    // x position of the board's top-left corner
 //let BOARD_Y = 100;                   // y position of the board's top-left corner (dynamic)
-const BRUSH_SIZE = 1;              // brush radius measured in cells
-const BRUSH_STEP = 0.25;             // stroke sampling distance in cells
+const BRUSH_SIZE = 2;              // brush radius measured in cells
+const BRUSH_STEP = 0.01;             // stroke sampling distance in cells
 const BACKGROUND_COLOR = "#000000";  // background color
 const DRAW_COLOR = "#ffffff";        // draw color
 const PAGE_COLOR = "#222222";        // canvas color around the board
@@ -112,6 +123,10 @@ function setup() {
 
   mod_3 = new Model_3(model3);
   mod_3_flag = false;
+
+  mod_4 = new Model_4(model4);
+  mod_4_flag = false;
+
   hideLoadingScreen();
 }
 
@@ -132,11 +147,15 @@ function draw() {
   if(mod_3_flag){
     mod_3.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
   }
+
+  if(mod_4_flag){
+    mod_4.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
+  }
   
 
   push();
   textSize(15); fill(255); textLeading(40);
-  text("Press C to clear the Board.\t\t||\t\tPress 1 to 3 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
+  text("Press C to clear the Board.\t\t||\t\tPress 1 to 4 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
   pop();
 
   drawBoard();
@@ -281,19 +300,29 @@ function keyPressed() {
   if (key === "2"){
     mod_2_flag = true;
     mod_1_flag = false;
-    mod_3_flag = false
+    mod_3_flag = false;
+    mod_4_flag = false;
   }
 
   if (key === "1"){
     mod_2_flag = false;
     mod_1_flag = true;
     mod_3_flag = false;
+    mod_4_flag = false;
   }
 
   if (key === "3"){
     mod_2_flag = false;
     mod_1_flag = false;
     mod_3_flag = true;
+    mod_4_flag = false;
+  }
+
+  if (key === "4"){
+    mod_2_flag = false;
+    mod_1_flag = false;
+    mod_3_flag = false;
+    mod_4_flag = true;
   }
 
   if (key === "f" || key === "F"){
