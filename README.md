@@ -13,7 +13,7 @@
 <!-- PROJECT HEADER -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://muhammadessa2002.github.io/neural_canvas/">
     <img src="assets/no_bg_logo.png" alt="Logo" width="550" height="300">
   </a>
   <h3 align="center">Neural Canvas: MNIST Neural Network Visualizer</h3>
