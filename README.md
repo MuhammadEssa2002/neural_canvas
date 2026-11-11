@@ -76,7 +76,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Neural Canvas Screen Shot][product-screenshot]](https://muhammadessa2002.github.io/neural_canvas/)
+[![Neural Canvas Screen Shot][product-screenshot-1]](https://muhammadessa2002.github.io/neural_canvas/)
+
+[![Neural Canvas Screen Shot][product-screenshot-2]](https://muhammadessa2002.github.io/neural_canvas/)
 
 Draw a digit on the 28×28 board and watch the activations flow through every layer in real time, from the input pixels, through the hidden layers, to the final prediction.
 
@@ -89,7 +91,8 @@ Everything runs client-side using [p5.js](https://p5js.org/) for rendering and [
 * Draw digits on a 28×28 canvas with a soft, anti-aliased brush (MNIST-style input)
 * Live forward pass: every neuron's activation is displayed and color-coded
 * Connections light up according to the input pixels and layer activations
-* Four pre-trained models you can switch between instantly, including one for Eastern Arabic-Indic digits (٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩) and one for Persian (Farsi) digits (۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹)
+* Five pre-trained models you can switch between instantly, including one for Eastern Arabic-Indic digits (٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩), one for Persian (Farsi) digits (۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹), and a Siamese network that compares two drawn digits
+* Siamese mode with two drawing boards: both inputs pass through the same shared weights, and the Euclidean distance between their 32-dimensional embeddings is shown live
 * Toggleable neuron shadows and network connection lines
 * Multiple selectable backgrounds
 * Responsive canvas that scales to the window while preserving the layout
@@ -102,22 +105,24 @@ Everything runs client-side using [p5.js](https://p5js.org/) for rendering and [
 
 ### Models
 
-All models are fully connected networks using ReLU activations in the hidden layers. Models 1 to 3 were trained with plain gradient descent for 2,000 epochs, while Model 4 was trained with mini-batch gradient descent with momentum for 200 epochs.
+All models are fully connected networks using ReLU activations in the hidden layers. Models 1 to 3 were trained with plain gradient descent for 2,000 epochs, Model 4 was trained with mini-batch gradient descent with momentum for 200 epochs, and Model 5 (a Siamese network) was trained with mini-batch Adam for 80 epochs.
 
-| | Model 1 | Model 2 | Model 3 | Model 4 |
-|---|---|---|---|---|
-| Digit set | Western Arabic numerals (0-9) | Western Arabic numerals (0-9) | Eastern Arabic-Indic numerals (٠-٩) | Persian (Farsi) numerals (۰-۹) |
-| Architecture | 784 → 20 → 20 → 10 | 784 → 40 → 40 → 10 | 784 → 20 → 20 → 15 → 10 | 784 → 20 → 20 → 15 → 10 |
-| Hidden layers | 2 | 2 | 3 | 3 |
-| Parameters | 16,330 | 33,450 | 16,595 | 16,595 |
-| Output | Raw scores | Softmax probabilities | Softmax probabilities | Softmax probabilities |
-| Loss function | Mean Squared Error | Cross-Entropy | Cross-Entropy | Cross-Entropy |
-| Optimizer | Vanilla Gradient Descent | Vanilla Gradient Descent | Vanilla Gradient Descent | Mini-batch Gradient Descent with Momentum |
-| Epochs | 2,000 | 2,000 | 2,000 | 200 |
-| Test accuracy | 92% | 96% | 96% | 96% |
-| Training | NumPy (Python) | NumPy (Python) | JAX (Python) | JAX (Python) |
+| | Model 1 | Model 2 | Model 3 | Model 4 | Model 5 |
+|---|---|---|---|---|---|
+| Digit set | Western Arabic numerals (0-9) | Western Arabic numerals (0-9) | Eastern Arabic-Indic numerals (٠-٩) | Persian (Farsi) numerals (۰-۹) | Pairs of drawn digits (compared, not classified) |
+| Architecture | 784 → 20 → 20 → 10 | 784 → 40 → 40 → 10 | 784 → 20 → 20 → 15 → 10 | 784 → 20 → 20 → 15 → 10 | 784 → 40 → 40 → 40 → 32 |
+| Hidden layers | 2 | 2 | 3 | 3 | 3 |
+| Parameters | 16,330 | 33,450 | 16,595 | 16,595 | 35,992 |
+| Output | Raw scores | Softmax probabilities | Softmax probabilities | Softmax probabilities | 32-D embedding (no softmax) |
+| Loss function | Mean Squared Error | Cross-Entropy | Cross-Entropy | Cross-Entropy | Contrastive Loss |
+| Optimizer | Vanilla Gradient Descent | Vanilla Gradient Descent | Vanilla Gradient Descent | Mini-batch Gradient Descent with Momentum | Mini-batch Adam |
+| Epochs | 2,000 | 2,000 | 2,000 | 200 | 80 |
+| Test accuracy | 92% | 96% | 96% | 96% | 95% |
+| Training | NumPy (Python) | NumPy (Python) | JAX (Python) | JAX (Python) | JAX (Python) |
 
-The predicted digit is the output neuron with the highest value. In the visualization, Model 2 draws its hidden layers as two columns of neurons to represent the wider layers, and Model 3 shows the additional third hidden layer and renders its prediction in Eastern Arabic-Indic script using the Noto Naskh Arabic font. Model 4 uses the same layer layout as Model 3 but renders its prediction in Persian (Farsi) script using the Parastoo font, which matters because the Persian glyphs for 4, 5 and 6 differ from the Arabic-Indic ones.
+For Models 1 to 4, the predicted digit is the output neuron with the highest value. In the visualization, Model 2 draws its hidden layers as two columns of neurons to represent the wider layers, and Model 3 shows the additional third hidden layer and renders its prediction in Eastern Arabic-Indic script using the Noto Naskh Arabic font. Model 4 uses the same layer layout as Model 3 but renders its prediction in Persian (Farsi) script using the Parastoo font, which matters because the Persian glyphs for 4, 5 and 6 differ from the Arabic-Indic ones.
+
+Model 5 works differently. It is a Siamese network: it has no digit prediction. Instead, the same network (shared weights) maps each of two drawn digits to a 32-dimensional embedding, and the Euclidean distance between the two embeddings measures how different the drawings are. A small distance means the network considers the two drawings similar, and a large distance means it considers them different. The visualization shows two drawing boards, one network column per input, the two embeddings on the right, and a colored distance bar that goes from green (similar) through blue to red (different). Training used contrastive loss, which pulls embeddings of matching pairs together and pushes non-matching pairs apart. Because 40 neurons per hidden layer would not fit on screen, each hidden layer shows a subset of its neurons, with dots standing in for the hidden ones.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -125,11 +130,11 @@ The predicted digit is the output neuron with the highest value. In the visualiz
 
 ### Accuracy and Limitations
 
-Models 1 and 2 were trained on the MNIST handwritten digit dataset, Model 3 was trained on a handwritten Eastern Arabic-Indic digit dataset, and Model 4 was trained on a handwritten Persian (Farsi) digit dataset, all in the same 28×28 format. The test accuracies reported above (roughly 92% to 96%) were measured on held-out test images from those datasets.
+Models 1 and 2 were trained on the MNIST handwritten digit dataset, Model 3 was trained on a handwritten Eastern Arabic-Indic digit dataset, and Model 4 was trained on a handwritten Persian (Farsi) digit dataset, all in the same 28×28 format. Model 5 uses the same 28×28 input format and was trained on pairs of digit images. The test accuracies reported above (roughly 92% to 96%) were measured on held-out test data from those datasets.
 
 Real-time drawing on the board can behave differently from those test results. Digits drawn with a mouse or finger are often thicker, thinner, smaller, larger or more off-center than the images the models were trained on, and the brush has its own look compared to scanned handwriting. Because of this, the models may produce unexpected predictions or fluctuating values while you draw, and they will often be less accurate in the browser than their test accuracy suggests. This project is meant as a visual way to understand how a network works, not as a production-grade digit recognizer.
 
-For best results, draw the digit large, centered and with a single clear stroke, similar to MNIST samples.
+For best results, draw the digit large, centered and with a single clear stroke, similar to MNIST samples. With Model 5, the distance between two drawings of the same digit can still be noticeably above zero, and it grows if the two drawings differ a lot in size, thickness or position.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,9 +143,9 @@ For best results, draw the digit large, centered and with a single clear stroke,
 ### How It Works
 
 1. **Input.** The 28×28 board is stored as a Math.js matrix with values in `[0, 1]` and flattened into a 784×1 vector.
-2. **Forward pass.** Each frame computes `Z = W·A + b` for every layer, applying ReLU in the hidden layers. Models 2, 3 and 4 additionally apply softmax to the output layer.
+2. **Forward pass.** Each frame computes `Z = W·A + b` for every layer, applying ReLU in the hidden layers. Models 2, 3 and 4 additionally apply softmax to the output layer. Model 5 runs the forward pass twice, once for each board, and its final layer is a linear 32-dimensional embedding with no activation.
 3. **Rendering.** Neurons are drawn as rounded rectangles whose fill intensity reflects their activation, with the numeric value printed inside. Connection opacity is driven by input pixel intensity and layer outputs. Everything is drawn in a fixed 1600×900 design space that is scaled to fit the window.
-4. **Prediction.** The index of the largest output value is shown in the prediction box (as an Eastern Arabic-Indic digit for Model 3 and a Persian digit for Model 4).
+4. **Prediction.** The index of the largest output value is shown in the prediction box (as an Eastern Arabic-Indic digit for Model 3 and a Persian digit for Model 4). Model 5 instead computes the Euclidean distance between the two embeddings and displays it as a number and a color-coded bar.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -199,7 +204,7 @@ p5.js and Math.js are loaded from the jsDelivr CDN, so an internet connection is
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Draw by clicking and dragging inside the board on the left. The network on the right updates live as you draw.
+Draw by clicking and dragging inside the board on the left. The network on the right updates live as you draw. In Model 5 (press `5`), two boards appear, one above the other. Draw a digit on each and watch the distance between their embeddings update.
 
 _Try the [live demo](https://muhammadessa2002.github.io/neural_canvas/) to see it in action._
 
@@ -207,11 +212,12 @@ _Try the [live demo](https://muhammadessa2002.github.io/neural_canvas/) to see i
 
 | Key | Action |
 |-----|--------|
-| `c` | Clear the board |
+| `c` | Clear the board (or both boards in Model 5) |
 | `1` | Switch to Model 1 |
 | `2` | Switch to Model 2 |
 | `3` | Switch to Model 3 |
 | `4` | Switch to Model 4 |
+| `5` | Switch to Model 5 (Siamese network, two boards) |
 | `f` | Cycle through backgrounds |
 | `s` | Turn neuron shadows on / off |
 | `l` | Turn network connection lines on / off |
@@ -221,7 +227,7 @@ _Try the [live demo](https://muhammadessa2002.github.io/neural_canvas/) to see i
 ```
 .
 ├── index.html                  # Page setup, loading screen and script loading
-├── sketch.js                   # p5.js sketch: drawing board, input handling, scaling, controls
+├── sketch.js                   # p5.js sketch: drawing boards, input handling, scaling, controls
 ├── models/
 │   ├── model_1/
 │   │   ├── model_1.js          # Model 1 (MSE) forward pass and visualization
@@ -232,11 +238,14 @@ _Try the [live demo](https://muhammadessa2002.github.io/neural_canvas/) to see i
 │   ├── model_3/
 │   │   ├── model_3.js          # Model 3 (Eastern Arabic-Indic digits, 3 hidden layers)
 │   │   └── mnist_model_3.json  # Trained weights and biases for Model 3
-│   └── model_4/
-│       ├── model_4.js          # Model 4 (Persian digits, 3 hidden layers, momentum training)
-│       └── mnist_model_4.json  # Trained weights and biases for Model 4
+│   ├── model_4/
+│   │   ├── model_4.js          # Model 4 (Persian digits, 3 hidden layers, momentum training)
+│   │   └── mnist_model_4.json  # Trained weights and biases for Model 4
+│   └── model_5/
+│       ├── model_5.js          # Model 5 (Siamese network, two inputs, 32-D embeddings, distance readout)
+│       └── mnist_model_5.json  # Trained weights and biases for Model 5
 ├── fonts/                      # Roboto-Regular.ttf, NotoNaskhArabic-Regular.ttf, Parastoo-Regular.ttf
-├── assets/                     # Logo and background images (logo.png, img_1.jpg ... img_5.jpg)
+├── assets/                     # Logo, screenshot and background images (no_bg_logo.png, screenshot.png, img_1.jpg ... img_5.jpg)
 └── LICENSE
 ```
 
@@ -252,7 +261,7 @@ Each JSON file contains the weights and biases of every layer. Models 1 and 2 ha
 }
 ```
 
-Models 3 and 4 have a fourth layer:
+Models 3, 4 and 5 have a fourth layer:
 
 ```json
 {
@@ -263,7 +272,7 @@ Models 3 and 4 have a fourth layer:
 }
 ```
 
-Each `Ln` has shape `(neurons in layer n, neurons in layer n-1)`, with the first layer taking the 784 input pixels and the last layer producing 10 outputs. Each bias is a column vector of matching height.
+Each `Ln` has shape `(neurons in layer n, neurons in layer n-1)`, with the first layer taking the 784 input pixels and the last layer producing 10 outputs (or 32 embedding values for Model 5). Each bias is a column vector of matching height.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -294,9 +303,9 @@ If you want to train a model on your own data, such as MNIST digits again with a
    - Use no more than 3 hidden layers.
    - Use no more than 40 neurons in each hidden layer.
    - Implement the forward pass with plain matrix multiplication (`Z = W·A + b`), the same way the existing models do in Math.js.
-2. Fork the repository and add your JSON file (for example `mnist_model_5.json`) to a new `models/model_5/` folder.
-3. Create a new `model_5.js` in the same folder by copying the closest existing model file (`model_1.js`, `model_2.js`, `model_3.js` or `model_4.js`) and adjusting the layer sizes, neuron positions, labels and info text to match your network. If your output labels are not digits, map the predicted index to your own characters, as `model_3.js` does with `toArabicDigit` and `model_4.js` does with `toFarsiDigit`. Include any font your script needs in the `fonts/` folder.
-4. Register the model in `index.html` (script tag), and in `sketch.js` (load the JSON in `preload()`, create the model and its flag in `setup()`, call its `draw()` in `draw()`, and add a key in `keyPressed()` to switch to it, making sure the other models' flags are turned off).
+2. Fork the repository and add your JSON file (for example `mnist_model_6.json`) to a new `models/model_6/` folder.
+3. Create a new `model_6.js` in the same folder by copying the closest existing model file (`model_1.js` to `model_5.js`; use `model_5.js` as the starting point for a two-input comparison model) and adjusting the layer sizes, neuron positions, labels and info text to match your network. If your output labels are not digits, map the predicted index to your own characters, as `model_3.js` does with `toArabicDigit` and `model_4.js` does with `toFarsiDigit`. Include any font your script needs in the `fonts/` folder.
+4. Register the model in `index.html` (script tag), and in `sketch.js` (load the JSON in `preload()`, add a new instance to the `mods` array in `setup()`, make sure `draw()` calls it with the right inputs, and extend the key check in `keyPressed()` so its number key sets `active` to the new model).
 5. Update the [Models](#models) table in this README with your model's architecture, parameter count, loss function, optimizer and test accuracy.
 6. Open a pull request with a short description of the dataset and how you trained the model.
 
@@ -370,7 +379,8 @@ Project Link: [https://github.com/MuhammadEssa2002/neural_canvas](https://github
 [issues-url]: https://github.com/MuhammadEssa2002/neural_canvas/issues
 [license-shield]: https://img.shields.io/github/license/MuhammadEssa2002/neural_canvas.svg?style=for-the-badge
 [license-url]: https://github.com/MuhammadEssa2002/neural_canvas/blob/main/LICENSE
-[product-screenshot]: assets/screenshot.png
+[product-screenshot-1]: assets/Screenshot_1.png
+[product-screenshot-2]: assets/Screenshot_2.png
 [p5.js]: https://img.shields.io/badge/p5.js-ED225D?style=for-the-badge&logo=p5dotjs&logoColor=white
 [p5-url]: https://p5js.org/
 [Math.js]: https://img.shields.io/badge/Math.js-1F2937?style=for-the-badge
