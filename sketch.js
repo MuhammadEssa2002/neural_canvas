@@ -1,92 +1,34 @@
+let model1, model2, model3, model4,model5;
+let mods, active = 0;
+let bg_img, bg_img_index = 0;
+let img_1, img_2, img_3, img_4, img_5;
+let default_font, arabic_font, farsi_font;
 
-let mod_1;
-let model1;
-let mod_1_flag;
-
-let mod_2;
-let model2;
-let mod_2_flag;
-
-let mod_3;
-let model3;
-let mod_3_flag;
-
-let mod_4;
-let model4;
-let mod_4_flag;
-
-let bg_img;
-let bg_img_index;
-let img_1;
-let img_2;
-let img_3;
-let img_4;
-let img_5;
-
-let default_font;
-let arabic_font;
-
-function preload() {
-  //Models
-  model1 = loadJSON("models/model_1/mnist_model_1.json");
-  model2 = loadJSON("models/model_2/mnist_model_2.json");
-  model3 = loadJSON("models/model_3/mnist_model_3.json");
-  model4 = loadJSON("models/model_4/mnist_model_4.json");
-
-  //fonts
-  default_font = loadFont("fonts/Roboto-Regular.ttf");
-  arabic_font = loadFont("fonts/NotoNaskhArabic-Regular.ttf");
-  farsi_font = loadFont("fonts/Parastoo-Regular.ttf");
-
-  //Images
-  img_1 = loadImage('assets/img_1.jpg'); 
-  img_2 = loadImage('assets/img_2.jpg'); 
-  img_3 = loadImage('assets/img_3.jpg');
-  img_4 = loadImage('assets/img_4.jpg'); 
-  img_5 = loadImage('assets/img_5.jpg'); 
-}
-
+let board1,board2,board3;
 let show_shadow = true;
 let show_lines = true;
-
-
-
-// ---------------------------------------------------------------------------
-// Configuration
-// ---------------------------------------------------------------------------
-const ROWS = 28;                     // number of rows
-const COLS = 28;                     // number of columns
-//const CELL_SIZE = 15;                // width and height of each square cell (px)
-//let BOARD_X = 50;                    // x position of the board's top-left corner
-//let BOARD_Y = 100;                   // y position of the board's top-left corner (dynamic)
-const BRUSH_SIZE = 2;              // brush radius measured in cells
-const BRUSH_STEP = 0.01;             // stroke sampling distance in cells
-const BACKGROUND_COLOR = "#000000";  // background color
-const DRAW_COLOR = "#ffffff";        // draw color
-const PAGE_COLOR = "#222222";        // canvas color around the board
-const GRID_LINE_COLOR = "rgba(255, 255, 255, 0.08)";
-
-// ---------------------------------------------------------------------------
-// State
-// ---------------------------------------------------------------------------
-let boardMatrix;          // Math.js matrix (ROWS x COLS)
-let isDrawing = false;    // true while drawing
-let lastX = null;         
-let lastY = null;
-let bgCol, fgCol;         
-let cellPositions = [];   
-
-// ---------------------------------------------------------------------------
-// p5.js lifecycle
-// ---------------------------------------------------------------------------
 
 const DESIGN_W = 1600;
 const DESIGN_H = 900;
 let S = 1, OX = 0, OY = 0;
 
-const CELL_SIZE = 15;
-const BOARD_X = 1;
-const BOARD_Y = 240;
+function preload() {
+  model1 = loadJSON("models/model_1/mnist_model_1.json");
+  model2 = loadJSON("models/model_2/mnist_model_2.json");
+  model3 = loadJSON("models/model_3/mnist_model_3.json");
+  model4 = loadJSON("models/model_4/mnist_model_4.json");
+  model5 = loadJSON("models/model_5/mnist_model_5.json");
+
+  default_font = loadFont("fonts/Roboto-Regular.ttf");
+  arabic_font = loadFont("fonts/NotoNaskhArabic-Regular.ttf");
+  farsi_font = loadFont("fonts/Parastoo-Regular.ttf");
+
+  img_1 = loadImage('assets/img_1.jpg');
+  img_2 = loadImage('assets/img_2.jpg');
+  img_3 = loadImage('assets/img_3.jpg');
+  img_4 = loadImage('assets/img_4.jpg');
+  img_5 = loadImage('assets/img_5.jpg');
+}
 
 function computeScale() {
   S  = min(width / DESIGN_W, height / DESIGN_H);
@@ -98,34 +40,22 @@ function computeScale() {
 function mx() { return (mouseX - OX) / S; }
 function my() { return (mouseY - OY) / S; }
 
-
 function setup() {
   const canvas = createCanvas(windowWidth, windowHeight);
   canvas.style("touch-action", "none");
-  pixelDensity(window.devicePixelRatio || 1);   // sharp on Retina
-
-  bgCol = color(BACKGROUND_COLOR);
-  fgCol = color(DRAW_COLOR);
+  pixelDensity(window.devicePixelRatio || 1);
   computeScale();
-  buildCellPositions();
-  clearBoard();
-
   textFont(default_font);
 
-  bg_img = [img_4,img_5,img_1,img_2,img_3,PAGE_COLOR,0];
-  bg_img_index = 0
+  // other options (rows, cols, cellSize, brushSize, colors...) use class defaults
+  let bSz = 2;
+  let bSp = 2;
+  board1 = new DrawingBoard({ x: 1, y: 240 });
+  board2 = new DrawingBoard({ x: 50, y: 100, cellSize: 10,brushSize:bSz,brushStep:bSp});
+  board3 = new DrawingBoard({ x: 50, y: 500, cellSize: 10,brushSize:bSz,brushStep:bSp});
 
-  mod_1 = new Model_1(model1);
-  mod_1_flag = true;
-
-  mod_2 = new Model_2(model2);
-  mod_2_flag = false;
-
-  mod_3 = new Model_3(model3);
-  mod_3_flag = false;
-
-  mod_4 = new Model_4(model4);
-  mod_4_flag = false;
+  bg_img = [img_4, img_5, img_1, img_2, img_3, "#222222", 0];
+  mods = [new Model_1(model1), new Model_2(model2), new Model_3(model3), new Model_4(model4),new Model_5(model5)];
 
   hideLoadingScreen();
 }
@@ -136,210 +66,62 @@ function draw() {
   translate(OX, OY);
   scale(S);
 
-  if(mod_1_flag){
-    mod_1.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
-  }
+  if(active === 4){
+    mods[active].draw(board2.getInputVector(),board3.getInputVector(), board2.getCellPositions(), board3.getCellPositions(), show_shadow, show_lines);
+    board2.draw();
+    board3.draw();
 
-  if(mod_2_flag){
-    mod_2.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
-  }
-
-  if(mod_3_flag){
-    mod_3.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
-  }
-
-  if(mod_4_flag){
-    mod_4.draw(getInputVector(), getCellPositions(),show_shadow,show_lines);
+  }else{
+    mods[active].draw(board1.getInputVector(), board1.getCellPositions(), show_shadow, show_lines);
+    board1.draw();
   }
   
 
   push();
   textSize(15); fill(255); textLeading(40);
-  text("Press C to clear the Board.\t\t||\t\tPress 1 to 4 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
+  text("Press C to clear the board1.\t\t||\t\tPress 1 to 5 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
   pop();
 
-  drawBoard();
+  pop();
 }
 
-
-/**
- * Centralized layout calculator to keep UI elements responsive
- */
-
-// ---------------------------------------------------------------------------
-// Rendering
-// ---------------------------------------------------------------------------
-function drawBoard() {
-  if (GRID_LINE_COLOR) {
-    stroke(GRID_LINE_COLOR);
-    strokeWeight(1);
-  } else {
-    noStroke();
-  }
-
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      const value = boardMatrix.get([r, c]);
-      fill(lerpColor(bgCol, fgCol, value)); 
-      rect(BOARD_X + c * CELL_SIZE, BOARD_Y + r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-    }
+function mousePressed()  { 
+  if(active===4){
+    board2.mousePressed(mx(), my()); 
+    board3.mousePressed(mx(), my());
+  }else{
+    board1.mousePressed(mx(), my()); 
   }
 }
 
-// ---------------------------------------------------------------------------
-// Mouse / touch input
-// ---------------------------------------------------------------------------
-function mousePressed() {
-  if (isInsideBoard(mx(), my())) {
-    isDrawing = true;
-    lastX = mx(); lastY = my();
-    stampBrush(lastX, lastY);
+function mouseDragged()  { 
+  if(active===4){
+    board2.mouseDragged(mx(), my()); 
+    board3.mouseDragged(mx(), my()); 
+  }else{
+    board1.mouseDragged(mx(), my()); 
   }
-}
-
-function mouseDragged() {
-  if (!isDrawing) return;
-  drawStroke(lastX, lastY, mx(), my());
-  lastX = mx(); lastY = my();
+  
   return false;
 }
 
-function mouseReleased() {
-  isDrawing = false;
-  lastX = lastY = null;
-}
-
-// ---------------------------------------------------------------------------
-// Drawing helpers
-// ---------------------------------------------------------------------------
-function isInsideBoard(px, py) {
-  return (
-    px >= BOARD_X && px < BOARD_X + COLS * CELL_SIZE &&
-    py >= BOARD_Y && py < BOARD_Y + ROWS * CELL_SIZE
-  );
-}
-
-function drawStroke(x0, y0, x1, y1) {
-  const distPx = dist(x0, y0, x1, y1);
-  const steps = max(1, ceil(distPx / (BRUSH_STEP * CELL_SIZE)));
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    stampBrush(lerp(x0, x1, t), lerp(y0, y1, t));
+function mouseReleased() { 
+  if(active===4){
+    board2.mouseReleased(); 
+    board3.mouseReleased(); 
+  }else{
+    board1.mouseReleased(); 
   }
-}
-
-function stampBrush(px, py) {
-  const gx = (px - BOARD_X) / CELL_SIZE;
-  const gy = (py - BOARD_Y) / CELL_SIZE;
-
-  const rMin = max(0, floor(gy - BRUSH_SIZE));
-  const rMax = min(ROWS - 1, ceil(gy + BRUSH_SIZE));
-  const cMin = max(0, floor(gx - BRUSH_SIZE));
-  const cMax = min(COLS - 1, ceil(gx + BRUSH_SIZE));
-
-  for (let r = rMin; r <= rMax; r++) {
-    for (let c = cMin; c <= cMax; c++) {
-      const d = dist(c + 0.5, r + 0.5, gx, gy);
-      if (d > BRUSH_SIZE) continue;
-
-      const ratio = d / BRUSH_SIZE;
-      const intensity = 1 - ratio * ratio; 
-      const current = boardMatrix.get([r, c]);
-      if (intensity > current) {
-        boardMatrix.set([r, c], constrain(intensity, 0, 1));
-      }
-    }
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Public utility functions
-// ---------------------------------------------------------------------------
-function clearBoard() {
-  boardMatrix = math.zeros(ROWS, COLS);
-}
-
-function getMatrix() {
-  return boardMatrix.toArray();
-}
-
-function getMathMatrix() {
-  return boardMatrix.clone();
-}
-
-function getInputVector() {
-  return math.reshape(math.flatten(boardMatrix), [784, 1]);
-}
-
-function buildCellPositions() {
-  cellPositions = [];
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      const x = BOARD_X + c * CELL_SIZE;
-      const y = BOARD_Y + r * CELL_SIZE;
-      cellPositions.push({
-        index: r * COLS + c,
-        row: r,
-        col: c,
-        x: x,
-        y: y,
-        centerX: x + CELL_SIZE / 2,
-        centerY: y + CELL_SIZE / 2,
-      });
-    }
-  }
-}
-
-function getCellPositions() {
-  return cellPositions.map((cell) => ({ ...cell }));
+  
 }
 
 function keyPressed() {
-  if (key === "c" || key === "C") clearBoard();
-  
-  if (key === "2"){
-    mod_2_flag = true;
-    mod_1_flag = false;
-    mod_3_flag = false;
-    mod_4_flag = false;
+  const k = key.toLowerCase();
+  if (k === "c"){
+    board1.clear(); board2.clear(); ; board3.clear();
   }
-
-  if (key === "1"){
-    mod_2_flag = false;
-    mod_1_flag = true;
-    mod_3_flag = false;
-    mod_4_flag = false;
-  }
-
-  if (key === "3"){
-    mod_2_flag = false;
-    mod_1_flag = false;
-    mod_3_flag = true;
-    mod_4_flag = false;
-  }
-
-  if (key === "4"){
-    mod_2_flag = false;
-    mod_1_flag = false;
-    mod_3_flag = false;
-    mod_4_flag = true;
-  }
-
-  if (key === "f" || key === "F"){
-    if(bg_img_index===(bg_img.length-1)){
-      bg_img_index = 0;
-    }else{
-      bg_img_index++;
-    }
-  }
-
-  if (key==="s" || key ==="S"){
-    show_shadow = !(show_shadow);
-  }
-
-  if (key==="l" || key ==="L"){
-    show_lines = !(show_lines);
-  }
-
-
+  if (k === "s") show_shadow = !show_shadow;
+  if (k === "l") show_lines = !show_lines;
+  if (k === "f") bg_img_index = (bg_img_index + 1) % bg_img.length;
+  if ("12345".includes(k) && k !== "") active = int(k) - 1;
 }

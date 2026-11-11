@@ -24,12 +24,15 @@ class Model_4{
 		this.L4_n = [];
 		this.ang = 0;
 		this.r = 20;
+		
+		this.dot_pos = 6;
+		this.dot_num = 3;
 
-	  let y1 = 60, y2 = 60, y3 = 150,y4 = 270;
-	  for (let i = 0; i < 20; i++) { this.L1_n.push([510,  y1]); y1 += 40; }
-	  for (let i = 0; i < 20; i++) { this.L2_n.push([780,  y2]); y2 += 40; }
-	  for (let i = 0; i < 15; i++) { this.L3_n.push([1040, y3]); y3 += 40; }
-	  for (let i = 0; i < 10; i++) { this.L4_n.push([1290, y4]); y4 += 40; }
+		let y1 = 200, y2 = 200, y3 = 200,y4 = 270;
+		for (let i = 0; i < 15; i++) { this.L1_n.push([575,  y1]); y1 += 40; }
+		for (let i = 0; i < 15; i++) { this.L2_n.push([835,  y2]); y2 += 40; }
+		for (let i = 0; i < 15; i++) { this.L3_n.push([1090, y3]); y3 += 40; }
+		for (let i = 0; i < 10; i++) { this.L4_n.push([1290, y4]); y4 += 40; }
 
 	}
 
@@ -82,6 +85,51 @@ class Model_4{
 
 
 
+		push();
+		noFill();
+		stroke(255);
+		strokeWeight(2);
+		rect(480,100,690,750,20,0,20,0);
+
+		push();
+		if(show_shadow){
+			drawingContext.shadowBlur = 10;
+			drawingContext.shadowColor = color(0);
+			drawingContext.shadowOffsetX = this.r*sin(this.ang);
+			drawingContext.shadowOffsetY = this.r*cos(this.ang);
+		}
+		fill(96, 193, 229,100);
+		noStroke();
+		rect(540,150,70,640,20,20,20,20);
+		pop();
+
+		push();
+		if(show_shadow){
+			drawingContext.shadowBlur = 10;
+			drawingContext.shadowColor = color(0);
+			drawingContext.shadowOffsetX = this.r*sin(this.ang);
+			drawingContext.shadowOffsetY = this.r*cos(this.ang);
+		}
+		fill(255, 233, 169,100);
+		noStroke();
+		rect(800,150,70,640,20,20,20,20);
+		pop();
+
+		push();
+		if(show_shadow){
+			drawingContext.shadowBlur = 10;
+			drawingContext.shadowColor = color(0);
+			drawingContext.shadowOffsetX = this.r*sin(this.ang);
+			drawingContext.shadowOffsetY = this.r*cos(this.ang);
+		}
+		fill(217, 54, 30,100);
+		noStroke();
+		rect(1055,150,70,640,20,20,20,20);
+		pop();
+
+		pop();
+
+
 		if(boardMatrix_not_empty && show_lines){
 			push();
 			for(let j=0;j<this.L1_n.length;j++){
@@ -94,10 +142,10 @@ class Model_4{
 			pop();
 
 			push();
-			for(let i=0;i<this.L2_n.length;i++){
-			  for(let j=0;j<this.L1_n.length;j++){
-			    let c2 = map(this.Z2_data[i][0],-0.3,0.3,0,1);
-			    stroke(255, 209, 209,c2*455);
+			for(let i=0;i<this.L1_n.length;i++){
+			  for(let j=0;j<this.L2_n.length;j++){
+			    let c2 = map(this.A2_data[i][0],0,0.8,0,1);
+			    stroke(255, 209, 209,c2*255);
 			    strokeWeight(1);
 			    line(this.L1_n[j][0],this.L1_n[j][1],this.L2_n[i][0],this.L2_n[i][1]);
 			  }
@@ -107,8 +155,8 @@ class Model_4{
 			push();
 			for(let i=0;i<this.L2_n.length;i++){
 			  for(let j=0;j<this.L3_n.length;j ++){
-			    let c3 = map(this.Z3_data[j][0],-0.3,0.3,0,1);
-			    stroke(226, 62, 87,c3*455);
+			    let c3 = map(this.A3_data[j][0],0,0.8,0,1);
+			    stroke(226, 62, 87,c3*255);
 			    strokeWeight(1);
 			    line(this.L3_n[j][0],this.L3_n[j][1],this.L2_n[i][0],this.L2_n[i][1]);
 			  }
@@ -118,8 +166,8 @@ class Model_4{
 			push();
 			for(let i=0;i<this.L3_n.length;i++){
 			  for(let j=0;j<this.L4_n.length;j ++){
-			    let c3 = map(this.Z4_data[j][0],-0.3,0.3,0,1);
-			    stroke(255, 45, 241,c3*455);
+			    let c3 = map(this.A4_data[j][0],0,0.8,0,1);
+			    stroke(255, 45, 241,c3*255);
 			    strokeWeight(1);
 			    line(this.L4_n[j][0],this.L4_n[j][1],this.L3_n[i][0],this.L3_n[i][1]);
 			  }
@@ -141,55 +189,76 @@ class Model_4{
 		}
 		push();
 		for(let i=0;i<this.L1_n.length;i++){
-		rectMode(CENTER,CENTER);
-		let c1 = map(this.A1_data[i],0,3,0,1);
-		stroke(100,100,255);
-		strokeWeight(1);
-		fill(c1*100,c1*100,c1*255);
-		rect(this.L1_n[i][0],this.L1_n[i][1],40,30,20,0,20,0);
+			if((i>=this.dot_pos) && i<=(this.dot_pos+this.dot_num-1)){
+				stroke(100,100,255);
+				strokeWeight(1);
+				fill(0);
+				circle(this.L1_n[i][0],this.L1_n[i][1],10)
+			}else{
+				rectMode(CENTER,CENTER);
+				let c1 = map(this.A1_data[i],0,3,0,1);
+				stroke(100,100,255);
+				strokeWeight(1);
+				fill(c1*100,c1*100,c1*255);
+				rect(this.L1_n[i][0],this.L1_n[i][1],40,30,20,0,20,0);
 
-		  push();
-		  textSize(10);
-		  textAlign(CENTER, CENTER);
-		  fill(255);
-		  text(this.A1_data[i][0].toFixed(3),this.L1_n[i][0],this.L1_n[i][1]);
-		  pop();
+				push();
+				textSize(10);
+				textAlign(CENTER, CENTER);
+				fill(255);
+				text(this.A1_data[i][0].toFixed(3),this.L1_n[i][0],this.L1_n[i][1]);
+				pop();
+			}
 		}
 		pop();
 
 		push();
 		for(let i=0;i<this.L2_n.length;i++){
-		  rectMode(CENTER,CENTER);
-		  let colo = map(this.A2_data[i][0],0,8,0,1);
-		  stroke(255,209,209);
-		  strokeWeight(1);
-		  fill(colo*255,colo*209,colo*209);
-		  rect(this.L2_n[i][0],this.L2_n[i][1],40,30,0,20,0,20);
+			if((i>=this.dot_pos) && i<=(this.dot_pos+this.dot_num-1)){
+				stroke(255,209,209);
+				strokeWeight(1);
+				fill(0);
+				circle(this.L2_n[i][0],this.L2_n[i][1],10)
+			}else{
+				rectMode(CENTER,CENTER);
+				let colo = map(this.A2_data[i][0],0,8,0,1);
+				stroke(255,209,209);
+				strokeWeight(1);
+				fill(colo*255,colo*209,colo*209);
+				rect(this.L2_n[i][0],this.L2_n[i][1],40,30,0,20,0,20);
 
-		  push();
-		  textSize(10);
-		  textAlign(CENTER, CENTER);
-		  fill(255);
-		  text(this.A2_data[i][0].toFixed(3),this.L2_n[i][0],this.L2_n[i][1]);
-		  pop();
+				push();
+				textSize(10);
+				textAlign(CENTER, CENTER);
+				fill(255);
+				text(this.A2_data[i][0].toFixed(3),this.L2_n[i][0],this.L2_n[i][1]);
+				pop();
+			}
 		}
 		pop();
 
 		push();
 		for(let i=0;i<this.L3_n.length;i++){
-		  rectMode(CENTER,CENTER);
-		  let colo = map(this.A3_data[i][0],0,20,0,1);
-		  stroke(255,62,87);
-		  strokeWeight(1);
-		  fill(colo*255,colo*62,colo*87);
-		  rect(this.L3_n[i][0],this.L3_n[i][1],40,30,0,20,20,20);
+			if((i>=this.dot_pos) && i<=(this.dot_pos+this.dot_num-1)){
+				stroke(255,62,87);
+				strokeWeight(1);
+				fill(0);
+				circle(this.L3_n[i][0],this.L3_n[i][1],10)
+			}else{
+				rectMode(CENTER,CENTER);
+				let colo = map(this.A3_data[i][0],0,20,0,1);
+				stroke(255,62,87);
+				strokeWeight(1);
+				fill(colo*255,colo*62,colo*87);
+				rect(this.L3_n[i][0],this.L3_n[i][1],40,30,0,20,20,20);
 
-		  push();
-		  textSize(10);
-		  textAlign(CENTER, CENTER);
-		  fill(255);
-		  text(this.A3_data[i][0].toFixed(3),this.L3_n[i][0],this.L3_n[i][1]);
-		  pop();
+				push();
+				textSize(10);
+				textAlign(CENTER, CENTER);
+				fill(255);
+				text(this.A3_data[i][0].toFixed(3),this.L3_n[i][0],this.L3_n[i][1]);
+				pop();
+			}
 		}
 		pop();
 
@@ -232,30 +301,37 @@ class Model_4{
 		    stroke(252, 173, 56);
   			strokeWeight(5);
 		    textAlign(CENTER, CENTER);
-		    textFont(farsi_font);
+		    textFont(arabic_font);
 		    text(this.toFarsiDigit(this.highestIndex),1500,420);
 		}
 	    pop();
 
 	    push();
-	    textSize(15);
+	    textSize(20);
 	    fill(255);
 		textAlign(CENTER, CENTER);
-		text("Hidden Layer: 1",510,870);
+		text("Hidden Layers",(2*480+690)/2,120);
 	    pop();
 
 	    push();
 	    textSize(15);
 	    fill(255);
 		textAlign(CENTER, CENTER);
-		text("Hidden Layer: 2",780,870);
+		text("1st Hidden Layer \n 20 Neurons",(2*540+70)/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
 	    fill(255);
 		textAlign(CENTER, CENTER);
-		text("Hidden Layer: 3",1040,760);
+		text("2nd Hidden Layer \n 20 Neurons",(2*800+70)/2,820);
+	    pop();
+
+	    push();
+	    textSize(15);
+	    fill(255);
+		textAlign(CENTER, CENTER);
+		text("3rd Hidden Layer \n 15 Neurons",(2*1055+70)/2,820);
 	    pop();
 
 	    push();
