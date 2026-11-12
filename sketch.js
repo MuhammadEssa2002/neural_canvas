@@ -42,7 +42,6 @@ function my() { return (mouseY - OY) / S; }
 
 function setup() {
   const canvas = createCanvas(windowWidth, windowHeight);
-  canvas.style("touch-action", "none");
   pixelDensity(window.devicePixelRatio || 1);
   computeScale();
   textFont(default_font);
@@ -50,9 +49,9 @@ function setup() {
   // other options (rows, cols, cellSize, brushSize, colors...) use class defaults
   let bSz = 2;
   let bSp = 2;
-  board1 = new DrawingBoard({ x: 1, y: 240 });
-  board2 = new DrawingBoard({ x: 50, y: 100, cellSize: 10,brushSize:bSz,brushStep:bSp});
-  board3 = new DrawingBoard({ x: 50, y: 500, cellSize: 10,brushSize:bSz,brushStep:bSp});
+  board1 = new DrawingBoard({ x: 1, y: 240,size:400 });
+  board2 = new DrawingBoard({ x: 50, y: 100});
+  board3 = new DrawingBoard({ x: 50, y: 500});
 
   bg_img = [img_4, img_5, img_1, img_2, img_3, "#222222", 0];
   mods = [new Model_1(model1), new Model_2(model2), new Model_3(model3), new Model_4(model4),new Model_5(model5)];
