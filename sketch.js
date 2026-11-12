@@ -77,8 +77,8 @@ function draw() {
   
 
   push();
-  textSize(15); fill(255); textLeading(40);
-  text("Press C to clear the board1.\t\t||\t\tPress 1 to 5 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
+  textSize(14); fill(255); textLeading(40);
+  text("Press C to clear all drawing boards\t\t||\t\tPress 1 to 5 to switch between models.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to toggle shadows.\t\t||\t\tPress L to toggle neural network connections.\t\t||\t\t Press R to Visit Neural Canvas on GitHub", 0, 20);
   pop();
 
   pop();
@@ -122,5 +122,6 @@ function keyPressed() {
   if (k === "s") show_shadow = !show_shadow;
   if (k === "l") show_lines = !show_lines;
   if (k === "f") bg_img_index = (bg_img_index + 1) % bg_img.length;
+  if (k === "r") window.open("https://github.com/MuhammadEssa2002/neural_canvas","_blank");
   if ("12345".includes(k) && k !== "") active = int(k) - 1;
 }
