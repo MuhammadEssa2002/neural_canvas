@@ -22,17 +22,17 @@ class Model_4{
 		this.L2_n = [];
 		this.L3_n = [];
 		this.L4_n = [];
-		this.ang = 0;
+		this.ang = 120;
 		this.r = 20;
-		
+
 		this.dot_pos = 6;
 		this.dot_num = 3;
 
-		let y1 = 200, y2 = 200, y3 = 200,y4 = 270;
-		for (let i = 0; i < 15; i++) { this.L1_n.push([575,  y1]); y1 += 40; }
-		for (let i = 0; i < 15; i++) { this.L2_n.push([835,  y2]); y2 += 40; }
-		for (let i = 0; i < 15; i++) { this.L3_n.push([1090, y3]); y3 += 40; }
-		for (let i = 0; i < 10; i++) { this.L4_n.push([1290, y4]); y4 += 40; }
+	  let y1 = 200, y2 = 200, y3 = 200,y4 = 270;
+	  for (let i = 0; i < 15; i++) { this.L1_n.push([575,  y1]); y1 += 40; }
+	  for (let i = 0; i < 15; i++) { this.L2_n.push([835,  y2]); y2 += 40; }
+	  for (let i = 0; i < 15; i++) { this.L3_n.push([1090, y3]); y3 += 40; }
+	  for (let i = 0; i < 10; i++) { this.L4_n.push([1290, y4]); y4 += 40; }
 
 	}
 
@@ -83,13 +83,14 @@ class Model_4{
 		this.highestIndex = this.predictions.indexOf(Math.max(...this.predictions));
 
 
-
-
 		push();
 		noFill();
-		stroke(255);
+		stroke("#D3DAD9");
 		strokeWeight(2);
 		rect(480,100,690,750,20,0,20,0);
+
+		stroke(255);
+  		strokeWeight(0.1);
 
 		push();
 		if(show_shadow){
@@ -98,8 +99,7 @@ class Model_4{
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
-		fill(96, 193, 229,100);
-		noStroke();
+		fill("#09154050");
 		rect(540,150,70,640,20,20,20,20);
 		pop();
 
@@ -110,8 +110,7 @@ class Model_4{
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
-		fill(255, 233, 169,100);
-		noStroke();
+		fill("#21183250");
 		rect(800,150,70,640,20,20,20,20);
 		pop();
 
@@ -122,8 +121,7 @@ class Model_4{
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
-		fill(217, 54, 30,100);
-		noStroke();
+		fill("#3D000050");
 		rect(1055,150,70,640,20,20,20,20);
 		pop();
 
@@ -183,7 +181,7 @@ class Model_4{
 		push();
 		if(show_shadow){
 			drawingContext.shadowBlur = 10;
-			drawingContext.shadowColor = color(0);
+			drawingContext.shadowColor = color(10);
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
@@ -287,19 +285,20 @@ class Model_4{
 		rectMode(CENTER,CENTER);
 		if(show_shadow){
 			drawingContext.shadowBlur = 10;
-			drawingContext.shadowColor = color(0);
+			drawingContext.shadowColor = color(10);
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
-  		fill(50);
-  		stroke(252, 173, 56);
-  		strokeWeight(2);
+  		fill("#21212190");
+  		stroke(255);
+  		strokeWeight(0.1);
   		rect(1500,445,100,100,20,0,20,20);
   		if(boardMatrix_not_empty){
-		    fill(255);
-		    textSize(120);
-		    stroke(252, 173, 56);
-  			strokeWeight(5);
+		    fill("#D3DAD9");
+		    textSize(100);
+		    //stroke(252, 173, 56);
+  			//strokeWeight(5);
+  			noStroke();
 		    textAlign(CENTER, CENTER);
 		    textFont(arabic_font);
 		    text(this.toFarsiDigit(this.highestIndex),1500,420);
@@ -308,48 +307,48 @@ class Model_4{
 
 	    push();
 	    textSize(20);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Hidden Layers",(2*480+690)/2,120);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("1st Hidden Layer \n 20 Neurons",(2*540+70)/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("2nd Hidden Layer \n 20 Neurons",(2*800+70)/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("3rd Hidden Layer \n 15 Neurons",(2*1055+70)/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Output Layer",1290,670);
 	    pop();
 
 	    push();
 	    textSize(20);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Prediction",1500,540);
 	    pop();
 
 	    push();
-		fill(255);
+		fill("#D3DAD9");
 		let info = "Trained using JAX (Python)\n" +
 		             "Parameters: 16,595\n" +
 		             "Test Accuracy: 96%\n" +
@@ -358,20 +357,14 @@ class Model_4{
 		             "Optimizer: Mini-batch Gradient Descent with Momentum";
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text(info, 200, 760);
+		text(info, 240, 750);
 		pop();
 
 		push();
-		fill(255);
+		fill("#D3DAD9");
 		textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text("Persian (Farsi) Digits", 200, 180);
-		pop();
-
-
-
-	    this.ang += 0.03
-
-	
+		text("Persian (Farsi) Digits", 240, 180);
+		pop();	
 
 
 	}
@@ -390,3 +383,8 @@ class Model_4{
 
 
 }
+
+
+
+
+		

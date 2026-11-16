@@ -23,13 +23,13 @@ class Model_5{
 		this.L3_n = [];
 		this.L4_n = [];
 		this.L5_n = [];
-		this.ang = 0;
+		this.ang = 120;
 		this.r = 10;
 		this.dis;
 
-		this.col1 = color(0,255,0);
-		this.col2 = color(0,0,255);
-		this.col3 = color(255,0,0);
+		this.col1 = color(0,255,0,150);
+		this.col2 = color(0,0,255,150);
+		this.col3 = color(255,0,0,150);
 		this.output = []
 		
 		this.dot_pos = 6;
@@ -38,7 +38,7 @@ class Model_5{
 		this.output_dot_pos = 3;
 		this.output_dot_num = 3;
 
-		let y1 = 200, y2 = 200, y3 = 200,y4 = 100,y5 = 530;
+		let y1 = 200, y2 = 200, y3 = 200,y4 = 125,y5 = 530;
 		for (let i = 0; i < 15; i++) { this.L1_n.push([575,  y1]); y1 += 40; }
 		for (let i = 0; i < 15; i++) { this.L2_n.push([835,  y2]); y2 += 40; }
 		for (let i = 0; i < 15; i++) { this.L3_n.push([1090, y3]); y3 += 40; }
@@ -140,37 +140,35 @@ class Model_5{
 		}
 
 		noFill();
-		stroke(255);
+		stroke("#D3DAD9");
 		strokeWeight(2);
 		rect(480,100,690,750,20,0,20,0);
 
+		stroke(255);
+  		strokeWeight(0.1);
+
 		push();
-		fill(96, 193, 229,100);
-		noStroke();
+		fill("#09154050");
 		rect(540,150,70,640,20,20,20,20);
 		pop();
 
 		push();
-		fill(255, 233, 169,100);
-		noStroke();
+		fill("#21183250");
 		rect(800,150,70,640,20,20,20,20);
 		pop();
 
 		push();
-		fill(217, 54, 30,100);
-		noStroke();
+		fill("#3D000050");
 		rect(1055,150,70,640,20,20,20,20);
 		pop();
 
 		push();
-		fill(213, 82, 163,100);
-		noStroke();
-		rect(1260,80,60,285,20,20,20,20);
+		fill("#42145450");
+		rect(1260,100,60,285,20,20,20,20);
 		pop();
 
 		push();
-		fill(213, 82, 163,100);
-		noStroke();
+		fill("#42145450");
 		rect(1260,500,60,285,20,20,20,20);
 		pop();
 
@@ -259,7 +257,7 @@ class Model_5{
 		push();
 		if(show_shadow){
 			drawingContext.shadowBlur = 10;
-			drawingContext.shadowColor = color(0);
+			drawingContext.shadowColor = color(10);
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
@@ -396,26 +394,26 @@ class Model_5{
 			push();
 			if(show_shadow){
 				drawingContext.shadowBlur = 10;
-				drawingContext.shadowColor = color(0);
+				drawingContext.shadowColor = color(10);
 				drawingContext.shadowOffsetX = this.r*sin(this.ang);
 				drawingContext.shadowOffsetY = this.r*cos(this.ang);
 			}
-			fill(255);
-			textSize(15);
+			fill("#D3DAD9");
+			textSize(12);
 			noStroke();
-	  		strokeWeight(2);
-			text(`Euclidean distance = ${this.dis.toFixed(3)}`,1460,520);
+	  		strokeWeight(0.5);
+			text(`Euclidean distance = ${this.dis.toFixed(3)}`,1410,500);
 
 			push();
 			noStroke()
 			fill(this.getColor(this.dis))
-			rect(1400,430,map(this.dis,0,1.5,0,300),50,20,0,20,0);
+			rect(1400,430,map(this.dis,0,1.5,20,170),30,20,0,20,0);
 			pop();
 
 			push();
 			stroke(255);
 			noFill();
-			rect(1400,430,300,50,20,0,20,0);
+			rect(1400,430,170,30,20,0,20,0);
 			pop();
 			
 			pop();
@@ -423,48 +421,47 @@ class Model_5{
 
 	    push();
 	    textSize(20);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Hidden Layers",(2*480+690)/2,120);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("1st Hidden Layer \n 40 Neurons",(2*540+70)/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("2nd Hidden Layer \n 40 Neurons",(2*800+70)/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("3rd Hidden Layer \n 40 Neurons",(2*1055+70)/2,820);
 	    pop();
 
 	    push();
 	    textSize(13);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("Embedding of the 1st input. \n 32-Dimensional",(2*1260+60)/2,400);
+		text("Embedding of the 1st input. \n 32-Dimensional",(2*1260+60)/2,420);
 	    pop();
 
 	    push();
 	    textSize(13);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Embedding of the 2nd input. \n 32-Dimensional",(2*1260+60)/2,820);
 	    pop();
 
 	    push();
-		fill(255);
 		let info = "Trained using JAX (Python)\n" +
 		             "Parameters: 35,992\n" +
 		             "Test Accuracy: 95%\n" +
@@ -472,20 +469,14 @@ class Model_5{
 		             "Loss Function: Contrastive Loss\n" +
 		             "Optimizer: Mini-Batch Adam.";
 
-		textSize(13); textAlign(CENTER, CENTER); fill(255); textLeading(18);
-		text(info, 180, 440);
+		textSize(13); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
+		text(info, 180, 490);
 		pop();
 
 		push();
-		fill(255);
-		textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(18);
-		text("Siamese Network", 180, 80);
+		textSize(20); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
+		text("Siamese Network", 180, 130);
 		pop();
-
-	    this.ang += 0.03
-
-	
-
 
 	}
 

@@ -18,7 +18,7 @@ class Model_1{
 		this.L1_n = [];
 		this.L2_n = [];
 		this.L3_n = [];
-		this.ang = 0;
+		this.ang = 120;
 		this.r = 20;
 
 	  	this.dot_pos = 6;
@@ -69,19 +69,22 @@ class Model_1{
 
 		push();
 		noFill();
-		stroke(255);
+		stroke("#D3DAD9");
 		strokeWeight(2);
 		rect(500,100,600,750,20,0,20,0);
 
+		stroke(255);
+  		strokeWeight(0.1);
+
 		push();
+
 		if(show_shadow){
 			drawingContext.shadowBlur = 10;
 			drawingContext.shadowColor = color(0);
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
-		fill(96, 193, 229,100);
-		noStroke();
+		fill("#09154050");
 		rect(560,150,100,640,20,20,20,20);
 		pop();
 
@@ -92,8 +95,7 @@ class Model_1{
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
-		fill(255, 233, 169,100);
-		noStroke();
+		fill("#21183250");
 		rect(930,150,100,640,20,20,20,20);
 		pop();
 
@@ -141,7 +143,7 @@ class Model_1{
 		push();
 		if(show_shadow){
 			drawingContext.shadowBlur = 10;
-			drawingContext.shadowColor = color(0);
+			drawingContext.shadowColor = color(10);
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
@@ -220,19 +222,20 @@ class Model_1{
 		rectMode(CENTER,CENTER);
 		if(show_shadow){
 			drawingContext.shadowBlur = 10;
-			drawingContext.shadowColor = color(0);
+			drawingContext.shadowColor = color(10);
 			drawingContext.shadowOffsetX = this.r*sin(this.ang);
 			drawingContext.shadowOffsetY = this.r*cos(this.ang);
 		}
-  		fill(50);
-  		stroke(252, 173, 56);
-  		strokeWeight(2);
+  		fill("#21212190");
+  		stroke(255);
+  		strokeWeight(0.1);
   		rect(1500,445,100,100,20,0,20,20);
   		if(boardMatrix_not_empty){
-		    fill(255);
+		    fill("#D3DAD9");
 		    textSize(100);
-		    stroke(252, 173, 56);
-  			strokeWeight(5);
+		    //stroke(252, 173, 56);
+  			//strokeWeight(5);
+  			noStroke();
 		    textAlign(CENTER, CENTER);
 		    text(this.highestIndex,1500,430);
 		}
@@ -240,41 +243,41 @@ class Model_1{
 
 	    push();
 	    textSize(20);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Hidden Layers",(2*500+600)/2,120);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("1st Hidden Layer \n 20 Neurons",(2*560+100)/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("2nd Hidden Layer \n 20 Neurons",(2*930+100)/2,820);
 	    pop();
 
 	    push();
 	    textSize(20);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Output Layer",1340,790);
 	    pop();
 
 	    push();
 	    textSize(20);
-	    fill(255);
+	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
 		text("Prediction",1500,540);
 	    pop();
 
 	    push();
-		fill(255);
+		fill("#D3DAD9");
 		let info = "Trained using NumPy (Python)\n" +
 		             "Parameters: 16,330\n" +
 		             "Test Accuracy: 92%\n" +
@@ -283,12 +286,12 @@ class Model_1{
 		             "Optimizer: Vanilla Gradient Descent (BGD)";
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text(info, 200, 760);
+		text(info, 240, 750);
 		pop();
 
 
 
-	    this.ang += 0.03
+	    
 
 	
 
