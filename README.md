@@ -221,6 +221,7 @@ _Try the [live demo](https://muhammadessa2002.github.io/neural_canvas/) to see i
 | `f` | Cycle through backgrounds |
 | `s` | Turn neuron shadows on / off |
 | `l` | Turn network connection lines on / off |
+| `n` | Turn labels on / off |
 
 ### Project Structure
 

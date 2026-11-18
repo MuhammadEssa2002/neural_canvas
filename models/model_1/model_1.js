@@ -33,7 +33,7 @@ class Model_1{
 
 	}
 
-	draw(X1,cell_pos,show_shadow,show_lines){
+	draw(X1,cell_pos,show_shadow,show_lines,show_labels){
 
 		let arr = math.flatten(X1).toArray();
 
@@ -68,10 +68,14 @@ class Model_1{
 
 
 		push();
-		noFill();
-		stroke("#D3DAD9");
-		strokeWeight(2);
-		rect(500,100,600,750,20,0,20,0);
+
+		if(show_labels){
+			noFill();
+			stroke("#D3DAD9");
+			strokeWeight(2);
+			rect(500,100,600,750,20,0,20,0);
+		}
+		
 
 		stroke(255);
   		strokeWeight(0.1);
@@ -241,60 +245,55 @@ class Model_1{
 		}
 	    pop();
 
-	    push();
-	    textSize(20);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Hidden Layers",(2*500+600)/2,120);
-	    pop();
+	    if(show_labels){
+	    	push();
+		    textSize(20);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Hidden Layers",(2*500+600)/2,120);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("1st Hidden Layer \n 20 Neurons",(2*560+100)/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("1st Hidden Layer \n 20 Neurons",(2*560+100)/2,820);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("2nd Hidden Layer \n 20 Neurons",(2*930+100)/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("2nd Hidden Layer \n 20 Neurons",(2*930+100)/2,820);
+		    pop();
 
-	    push();
-	    textSize(20);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Output Layer",1200,800);
-	    pop();
+		    push();
+		    textSize(20);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Output Layer",1200,800);
+		    pop();
 
-	    push();
-	    textSize(20);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Prediction",1420,540);
-	    pop();
+		    push();
+		    textSize(20);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Prediction",1420,540);
+		    pop();
 
-	    push();
-		fill("#D3DAD9");
-		let info = "Trained using NumPy (Python)\n" +
-		             "Parameters: 16,330\n" +
-		             "Test Accuracy: 92%\n" +
-		             "Epochs: 2,000\n" +
-		             "Loss Function: MSE\n" +
-		             "Optimizer: Vanilla Gradient Descent (BGD)";
+		    push();
+			fill("#D3DAD9");
+			let info = "Trained using NumPy (Python)\n" +
+			             "Parameters: 16,330\n" +
+			             "Test Accuracy: 92%\n" +
+			             "Epochs: 2,000\n" +
+			             "Loss Function: MSE\n" +
+			             "Optimizer: Vanilla Gradient Descent (BGD)";
 
-		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text(info, 260, 690);
-		pop();
-
-
-
-	    
-
-	
-
+			textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
+			text(info, 260, 690);
+			pop();
+	    }
 
 	}
 

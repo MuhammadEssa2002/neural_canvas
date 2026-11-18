@@ -36,7 +36,7 @@ class Model_4{
 
 	}
 
-	draw(X1,cell_pos,show_shadow,show_lines){
+	draw(X1,cell_pos,show_shadow,show_lines,show_labels){
 
 		let arr = math.flatten(X1).toArray();
 
@@ -84,10 +84,13 @@ class Model_4{
 
 
 		push();
-		noFill();
-		stroke("#D3DAD9");
-		strokeWeight(2);
-		rect(480,100,690,750,20,0,20,0);
+		if(show_labels){
+			noFill();
+			stroke("#D3DAD9");
+			strokeWeight(2);
+			rect(480,100,690,750,20,0,20,0);
+		}
+		
 
 		stroke(255);
   		strokeWeight(0.1);
@@ -305,68 +308,68 @@ class Model_4{
 		}
 	    pop();
 
-	    push();
-	    textSize(20);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Hidden Layers",(2*480+690)/2,120);
-	    pop();
+	    if(show_labels){
+	    	push();
+		    textSize(20);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Hidden Layers",(2*480+690)/2,120);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("1st Hidden Layer \n 20 Neurons",(2*540+70)/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("1st Hidden Layer \n 20 Neurons",(2*540+70)/2,820);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("2nd Hidden Layer \n 20 Neurons",(2*800+70)/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("2nd Hidden Layer \n 20 Neurons",(2*800+70)/2,820);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("3rd Hidden Layer \n 15 Neurons",(2*1055+70)/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("3rd Hidden Layer \n 15 Neurons",(2*1055+70)/2,820);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Output Layer",1290,670);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Output Layer",1290,670);
+		    pop();
 
-	    push();
-	    textSize(20);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Prediction",1420,540);
-	    pop();
+		    push();
+		    textSize(20);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Prediction",1420,540);
+		    pop();
 
-	    push();
-		fill("#D3DAD9");
-		let info = "Trained using JAX (Python)\n" +
-		             "Parameters: 16,595\n" +
-		             "Test Accuracy: 96%\n" +
-		             "Epochs: 200\n" +
-		             "Loss Function: Cross-Entropy\n" +
-		             "Optimizer: Mini-batch Gradient Descent with Momentum";
+		    push();
+			fill("#D3DAD9");
+			let info = "Trained using JAX (Python)\n" +
+			             "Parameters: 16,595\n" +
+			             "Test Accuracy: 96%\n" +
+			             "Epochs: 200\n" +
+			             "Loss Function: Cross-Entropy\n" +
+			             "Optimizer: Mini-batch Gradient Descent with Momentum";
 
-		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text(info, 260, 690);
-		pop();
+			textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
+			text(info, 260, 690);
+			pop();
 
-		push();
-		fill("#D3DAD9");
-		textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text("Persian (Farsi) Digits", 270, 180);
-		pop();	
-
-
+			push();
+			fill("#D3DAD9");
+			textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(25);
+			text("Persian (Farsi) Digits", 270, 180);
+			pop();	
+	    }
 	}
 
 	softmax(z) {

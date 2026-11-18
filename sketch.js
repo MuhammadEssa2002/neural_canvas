@@ -8,6 +8,7 @@ let board1, board2, board3;
 let show_shadow = true;
 let show_lines = true;
 let dark_mode = true;
+let show_labels = true;
 
 const DESIGN_W = 1600;
 const DESIGN_H = 900;
@@ -101,20 +102,22 @@ function draw() {
   pop();
 
   if (active === 4) {
-    mods[active].draw(board2.getInputVector(), board3.getInputVector(), board2.getCellPositions(), board3.getCellPositions(), show_shadow, show_lines);
+    mods[active].draw(board2.getInputVector(), board3.getInputVector(), board2.getCellPositions(), board3.getCellPositions(), show_shadow, show_lines,show_labels);
     board2.draw();
     board3.draw();
   } else {
-    mods[active].draw(board1.getInputVector(), board1.getCellPositions(), show_shadow, show_lines);
+    mods[active].draw(board1.getInputVector(), board1.getCellPositions(), show_shadow, show_lines,show_labels);
     board1.draw();
   }
 
-  push();
-  textSize(15); fill("#D3DAD9"); textLeading(40);
-  text("Press C to clear the board.\t\t||\t\tPress 1 to 5 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
-  pop();
+  if(show_labels){
+    push();
+    textSize(15); fill("#D3DAD9"); textLeading(40);
+    text("Press C to clear the board.\t\t||\t\tPress 1 to 5 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.\t\t||\t\tPress N to turn off / on labels.", 0, 20);
+    pop();
 
-  pop();
+    pop();
+  }
 }
 
 function mousePressed() {
@@ -153,6 +156,7 @@ function keyPressed() {
   }
   if (k === "s") show_shadow = !show_shadow;
   if (k === "l") show_lines = !show_lines;
+  if (k === "n") show_labels = !show_labels;
   if (k === "f") bg_img_index = (bg_img_index + 1) % bg_img.length;
   if (k === "r") window.open("https://github.com/MuhammadEssa2002/neural_canvas", "_blank");
   if ("12345".includes(k) && k !== "") active = int(k) - 1;

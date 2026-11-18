@@ -69,7 +69,7 @@ class Model_5{
 	    }
 	}
 
-	draw(X1,X2,cell_pos_1,cell_pos_2,show_shadow,show_lines){
+	draw(X1,X2,cell_pos_1,cell_pos_2,show_shadow,show_lines,show_labels){
 
 		let arr1 = math.flatten(X1).toArray();
 		let arr2 = math.flatten(X2).toArray();
@@ -140,10 +140,13 @@ class Model_5{
 		}
 
 		noFill();
-		stroke("#D3DAD9");
-		strokeWeight(2);
-		rect(400,100,690,750,20,0,20,0);
+		if(show_labels){
+			stroke("#D3DAD9");
+			strokeWeight(2);
+			rect(400,100,690,750,20,0,20,0);
 
+		}
+		
 		stroke(255);
   		strokeWeight(0.1);
 
@@ -398,12 +401,13 @@ class Model_5{
 				drawingContext.shadowOffsetX = this.r*sin(this.ang);
 				drawingContext.shadowOffsetY = this.r*cos(this.ang);
 			}
-			fill("#D3DAD9");
-			textSize(12);
-			noStroke();
-	  		strokeWeight(1);
-			text(`Euclidean distance = ${this.dis.toFixed(3)}`,1310,500);
-
+			if(show_labels){
+				fill("#D3DAD9");
+				textSize(12);
+				noStroke();
+		  		strokeWeight(1);
+				text(`Euclidean distance = ${this.dis.toFixed(3)}`,1310,500);
+			}
 			push();
 			noStroke()
 			fill(this.getColor(this.dis))
@@ -419,64 +423,66 @@ class Model_5{
 			pop();
 		}
 
-	    push();
-	    textSize(20);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Hidden Layers",(2*400+690)/2,120);
-	    pop();
+		if(show_labels){
+			push();
+		    textSize(20);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Hidden Layers",(2*400+690)/2,120);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("1st Hidden Layer \n 40 Neurons",(2*this.L1_n[0][0])/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("1st Hidden Layer \n 40 Neurons",(2*this.L1_n[0][0])/2,820);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("2nd Hidden Layer \n 40 Neurons",(2*this.L2_n[0][0])/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("2nd Hidden Layer \n 40 Neurons",(2*this.L2_n[0][0])/2,820);
+		    pop();
 
-	    push();
-	    textSize(15);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("3rd Hidden Layer \n 40 Neurons",(2*this.L3_n[0][0])/2,820);
-	    pop();
+		    push();
+		    textSize(15);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("3rd Hidden Layer \n 40 Neurons",(2*this.L3_n[0][0])/2,820);
+		    pop();
 
-	    push();
-	    textSize(13);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Embedding of the 1st input. \n 32-Dimensional",(2*this.L4_n[0][0])/2,420);
-	    pop();
+		    push();
+		    textSize(13);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Embedding of the 1st input. \n 32-Dimensional",(2*this.L4_n[0][0])/2,420);
+		    pop();
 
-	    push();
-	    textSize(13);
-	    fill("#D3DAD9");
-		textAlign(CENTER, CENTER);
-		text("Embedding of the 2nd input. \n 32-Dimensional",(2*this.L4_n[0][0])/2,820);
-	    pop();
+		    push();
+		    textSize(13);
+		    fill("#D3DAD9");
+			textAlign(CENTER, CENTER);
+			text("Embedding of the 2nd input. \n 32-Dimensional",(2*this.L4_n[0][0])/2,820);
+		    pop();
 
-	    push();
-		let info = "Trained using JAX (Python)\n" +
-		             "Parameters: 35,992\n" +
-		             "Test Accuracy: 95%\n" +
-		             "Epochs: 80\n" +
-		             "Loss Function: Contrastive Loss\n" +
-		             "Optimizer: Mini-Batch Adam.";
+		    push();
+			let info = "Trained using JAX (Python)\n" +
+			             "Parameters: 35,992\n" +
+			             "Test Accuracy: 95%\n" +
+			             "Epochs: 80\n" +
+			             "Loss Function: Contrastive Loss\n" +
+			             "Optimizer: Mini-Batch Adam.";
 
-		textSize(13); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
-		text(info, 240, 470);
-		pop();
+			textSize(13); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
+			text(info, 240, 470);
+			pop();
 
-		push();
-		textSize(20); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
-		text("Siamese Network", 240, 110);
-		pop();
+			push();
+			textSize(20); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
+			text("Siamese Network", 240, 110);
+			pop();
+		}
 
 	}
 
