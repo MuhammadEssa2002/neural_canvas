@@ -111,7 +111,7 @@ function draw() {
 
   push();
   textSize(15); fill("#D3DAD9"); textLeading(40);
-  text("Press C to clear the board1.\t\t||\t\tPress 1 to 5 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
+  text("Press C to clear the board.\t\t||\t\tPress 1 to 5 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.", 0, 20);
   pop();
 
   pop();
