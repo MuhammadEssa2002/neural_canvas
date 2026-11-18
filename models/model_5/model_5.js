@@ -39,11 +39,11 @@ class Model_5{
 		this.output_dot_num = 3;
 
 		let y1 = 200, y2 = 200, y3 = 200,y4 = 125,y5 = 530;
-		for (let i = 0; i < 15; i++) { this.L1_n.push([575,  y1]); y1 += 40; }
-		for (let i = 0; i < 15; i++) { this.L2_n.push([835,  y2]); y2 += 40; }
-		for (let i = 0; i < 15; i++) { this.L3_n.push([1090, y3]); y3 += 40; }
-		for (let i = 0; i < 9; i++) { this.L4_n.push([1290, y4]); y4 += 30; }
-		for (let i = 0; i < 9; i++) { this.L5_n.push([1290, y5]); y5 += 30; }
+		for (let i = 0; i < 15; i++) { this.L1_n.push([500,  y1]); y1 += 40; }
+		for (let i = 0; i < 15; i++) { this.L2_n.push([760,  y2]); y2 += 40; }
+		for (let i = 0; i < 15; i++) { this.L3_n.push([1015, y3]); y3 += 40; }
+		for (let i = 0; i < 9; i++) { this.L4_n.push([1200, y4]); y4 += 30; }
+		for (let i = 0; i < 9; i++) { this.L5_n.push([1200, y5]); y5 += 30; }
 
 	}
 	
@@ -142,34 +142,34 @@ class Model_5{
 		noFill();
 		stroke("#D3DAD9");
 		strokeWeight(2);
-		rect(480,100,690,750,20,0,20,0);
+		rect(400,100,690,750,20,0,20,0);
 
 		stroke(255);
   		strokeWeight(0.1);
 
 		push();
 		fill("#09154050");
-		rect(540,150,70,640,20,20,20,20);
+		rect(this.L1_n[0][0]-70/2,150,70,640,20,20,20,20);
 		pop();
 
 		push();
 		fill("#21183250");
-		rect(800,150,70,640,20,20,20,20);
+		rect(this.L2_n[0][0]-70/2,150,70,640,20,20,20,20);
 		pop();
 
 		push();
 		fill("#3D000050");
-		rect(1055,150,70,640,20,20,20,20);
+		rect(this.L3_n[0][0]-70/2,150,70,640,20,20,20,20);
 		pop();
 
 		push();
 		fill("#42145450");
-		rect(1260,100,60,285,20,20,20,20);
+		rect(this.L4_n[0][0]-60/2,100,60,285,20,20,20,20);
 		pop();
 
 		push();
 		fill("#42145450");
-		rect(1260,500,60,285,20,20,20,20);
+		rect(this.L4_n[0][0]-60/2,500,60,285,20,20,20,20);
 		pop();
 
 		pop();
@@ -401,19 +401,19 @@ class Model_5{
 			fill("#D3DAD9");
 			textSize(12);
 			noStroke();
-	  		strokeWeight(0.5);
-			text(`Euclidean distance = ${this.dis.toFixed(3)}`,1410,500);
+	  		strokeWeight(1);
+			text(`Euclidean distance = ${this.dis.toFixed(3)}`,1310,500);
 
 			push();
 			noStroke()
 			fill(this.getColor(this.dis))
-			rect(1400,430,map(this.dis,0,1.5,20,170),30,20,0,20,0);
+			rect(1300,430,map(this.dis,0,1.5,20,170),30,20,0,20,0);
 			pop();
 
 			push();
 			stroke(255);
 			noFill();
-			rect(1400,430,170,30,20,0,20,0);
+			rect(1300,430,170,30,20,0,20,0);
 			pop();
 			
 			pop();
@@ -423,42 +423,42 @@ class Model_5{
 	    textSize(20);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("Hidden Layers",(2*480+690)/2,120);
+		text("Hidden Layers",(2*400+690)/2,120);
 	    pop();
 
 	    push();
 	    textSize(15);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("1st Hidden Layer \n 40 Neurons",(2*540+70)/2,820);
+		text("1st Hidden Layer \n 40 Neurons",(2*this.L1_n[0][0])/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("2nd Hidden Layer \n 40 Neurons",(2*800+70)/2,820);
+		text("2nd Hidden Layer \n 40 Neurons",(2*this.L2_n[0][0])/2,820);
 	    pop();
 
 	    push();
 	    textSize(15);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("3rd Hidden Layer \n 40 Neurons",(2*1055+70)/2,820);
+		text("3rd Hidden Layer \n 40 Neurons",(2*this.L3_n[0][0])/2,820);
 	    pop();
 
 	    push();
 	    textSize(13);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("Embedding of the 1st input. \n 32-Dimensional",(2*1260+60)/2,420);
+		text("Embedding of the 1st input. \n 32-Dimensional",(2*this.L4_n[0][0])/2,420);
 	    pop();
 
 	    push();
 	    textSize(13);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("Embedding of the 2nd input. \n 32-Dimensional",(2*1260+60)/2,820);
+		text("Embedding of the 2nd input. \n 32-Dimensional",(2*this.L4_n[0][0])/2,820);
 	    pop();
 
 	    push();
@@ -470,12 +470,12 @@ class Model_5{
 		             "Optimizer: Mini-Batch Adam.";
 
 		textSize(13); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
-		text(info, 180, 490);
+		text(info, 240, 470);
 		pop();
 
 		push();
 		textSize(20); textAlign(CENTER, CENTER); fill("#D3DAD9"); textLeading(18);
-		text("Siamese Network", 180, 130);
+		text("Siamese Network", 240, 110);
 		pop();
 
 	}

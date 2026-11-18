@@ -54,14 +54,12 @@ function setup() {
   // other options (rows, cols, cellSize, brushSize, colors...) use class defaults
   let bSz = 2;
   let bSp = 2;
-  board1 = new DrawingBoard({ x: 50, y: 240, size: 400 });
-  board2 = new DrawingBoard({ x: 50, y: 150 });
-  board3 = new DrawingBoard({ x: 50, y: 550 });
+  board1 = new DrawingBoard({ x: 100, y: 240, size: 350 });
+  board2 = new DrawingBoard({ x: 100, y: 130 });
+  board3 = new DrawingBoard({ x: 100, y: 530 });
 
   bg_img = [img_4, img_5, img_1, img_2, img_3, "#222222", 0];
   mods = [new Model_1(model1), new Model_2(model2), new Model_3(model3), new Model_4(model4), new Model_5(model5)];
-
-  //connectSocket();
 
   // defined in your index.html; guarded so a missing function doesn't crash setup()
   if (typeof hideLoadingScreen === "function") hideLoadingScreen();
@@ -76,13 +74,14 @@ function draw() {
   background(bg_img[bg_img_index]);
 
   push();
-  
+  translate(OX, OY);
+  scale(S);
 
-  translate(width/2,height/2);
+  push();
   rectMode(CENTER);
   rotate(0);
-  stroke(255);
-  strokeWeight(0.1);
+  stroke(50);
+  strokeWeight(1.5);
 
   if(show_shadow){
     drawingContext.shadowBlur = 10;
@@ -92,20 +91,14 @@ function draw() {
   }
   fill("#21212160");
   
-  rect(30,-10+5*sin(ang),1650,800,40,0,40,0)
+  rect(810+10*cos(ang),440+5*sin(ang),1450,780,40,0,40,0)
 
-  rect(10,10+5*cos(ang),1650,800,40,0,40,0)
+  rect(790+10*sin(ang+45),460+5*cos(ang),1450,780,40,0,40,0)
 
-  rect(-10,30+5*cos(ang+180),1650,800,40,0,40,0)
-  translate(-10,30);
+  rect(770,480+5*cos(ang+45),1450,780,40,0,40,0)
 
-  ang += 0.7;
+  ang += 2;
   pop();
-
-
-  push();
-  translate(OX, OY);
-  scale(S);
 
   if (active === 4) {
     mods[active].draw(board2.getInputVector(), board3.getInputVector(), board2.getCellPositions(), board3.getCellPositions(), show_shadow, show_lines);

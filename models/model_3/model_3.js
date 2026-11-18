@@ -292,7 +292,7 @@ class Model_3{
   		fill("#21212190");
   		stroke(255);
   		strokeWeight(0.1);
-  		rect(1500,445,100,100,20,0,20,20);
+  		rect(1420,445,100,100,20,0,20,20);
   		if(boardMatrix_not_empty){
 		    fill("#D3DAD9");
 		    textSize(100);
@@ -301,7 +301,7 @@ class Model_3{
   			noStroke();
 		    textAlign(CENTER, CENTER);
 		    textFont(arabic_font);
-		    text(this.toArabicDigit(this.highestIndex),1500,420);
+		    text(this.toArabicDigit(this.highestIndex),1420,420);
 		}
 	    pop();
 
@@ -344,7 +344,7 @@ class Model_3{
 	    textSize(20);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("Prediction",1500,540);
+		text("Prediction",1420,540);
 	    pop();
 
 	    push();
@@ -357,13 +357,13 @@ class Model_3{
 		             "Optimizer: Vanilla Gradient Descent (BGD)";
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text(info, 240, 750);
+		text(info, 260, 690);
 		pop();
 
 		push();
 		fill("#D3DAD9");
 		textSize(20); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text("Arabic Digits", 240, 180);
+		text("Arabic Digits", 270, 180);
 		pop();
 
 	}

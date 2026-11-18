@@ -24,12 +24,12 @@ class Model_1{
 	  	this.dot_pos = 6;
 		this.dot_num = 3;
 
-	  let y1 = 200, y2 = 200, y3 = 150;
+	  let y1 = 200, y2 = 200, y3 = 180;
 	  for (let i = 0; i < 15; i++) {this.L1_n.push([610,  y1]);y1 += 40;}
 
 	  for (let i = 0; i < 15; i++) {this.L2_n.push([980,  y2]);y2 += 40;}
 
-	  for (let i = 0; i < 10; i++) { this.L3_n.push([1340, y3]); y3 += 65;}
+	  for (let i = 0; i < 10; i++) { this.L3_n.push([1200, y3]); y3 += 65;}
 
 	}
 
@@ -229,7 +229,7 @@ class Model_1{
   		fill("#21212190");
   		stroke(255);
   		strokeWeight(0.1);
-  		rect(1500,445,100,100,20,0,20,20);
+  		rect(1420,445,100,100,20,0,20,20);
   		if(boardMatrix_not_empty){
 		    fill("#D3DAD9");
 		    textSize(100);
@@ -237,7 +237,7 @@ class Model_1{
   			//strokeWeight(5);
   			noStroke();
 		    textAlign(CENTER, CENTER);
-		    text(this.highestIndex,1500,430);
+		    text(this.highestIndex,1420,430);
 		}
 	    pop();
 
@@ -266,14 +266,14 @@ class Model_1{
 	    textSize(20);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("Output Layer",1340,790);
+		text("Output Layer",1200,800);
 	    pop();
 
 	    push();
 	    textSize(20);
 	    fill("#D3DAD9");
 		textAlign(CENTER, CENTER);
-		text("Prediction",1500,540);
+		text("Prediction",1420,540);
 	    pop();
 
 	    push();
@@ -286,7 +286,7 @@ class Model_1{
 		             "Optimizer: Vanilla Gradient Descent (BGD)";
 
 		textSize(15); textAlign(CENTER, CENTER); fill(255); textLeading(25);
-		text(info, 240, 750);
+		text(info, 260, 690);
 		pop();
 
 
