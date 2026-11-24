@@ -18,6 +18,10 @@ class DrawingBoard {
     this.small = createGraphics(this.MODEL, this.MODEL);
     this.small.pixelDensity(1);
 
+    this.raw = createGraphics(this.MODEL, this.MODEL);
+    this.raw.pixelDensity(1);
+    this._rawVec = new Array(this.MODEL * this.MODEL).fill(0);
+
     this.drawing = false;
     this.last = null;
     this._vec = new Array(this.MODEL * this.MODEL).fill(0);
@@ -74,6 +78,8 @@ class DrawingBoard {
     this._dirty = false;
     this.drawing = false;
     this.last = null;
+    this.raw.background(0);
+    this._rawVec.fill(0);
   }
 
   isEmpty() {
@@ -162,6 +168,15 @@ class DrawingBoard {
     }
 
     for (let i = 0; i < M * M; i++) this._vec[i] = sp[i * 4] / 255;
+
+    this.raw.background(0);
+    this.raw.image(this.pg, 0, 0, M, M);
+    this.raw.loadPixels();
+    for (let i = 0; i < M * M; i++) this._rawVec[i] = this.raw.pixels[i * 4] / 255;
+  }
+  getRawArray() {
+    this.getInputVector();   // makes sure _process() has run
+    return this._rawVec;
   }
 
   // ---------- rendering ----------
