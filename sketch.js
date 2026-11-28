@@ -1,4 +1,4 @@
-let model1, model2, model3, model4, model5, model6;
+let model1, model2, model3, model4, model5, model6,model7;
 let mods, active = 0;
 let bg_img, bg_img_index = 0;
 let img_1, img_2, img_3, img_4, img_5;
@@ -23,6 +23,7 @@ function preload() {
   model4 = loadJSON("models/model_4/mnist_model_4.json");
   model5 = loadJSON("models/model_5/mnist_model_5.json");
   model6 = loadJSON("models/model_6/mnist_model_6.json");
+  model7 = loadJSON("models/model_7/mnist_model_7.json");
 
   default_font = loadFont("fonts/Roboto-Regular.ttf");
   arabic_font = loadFont("fonts/NotoNaskhArabic-Regular.ttf");
@@ -56,12 +57,12 @@ function setup() {
   // other options (rows, cols, cellSize, brushSize, colors...) use class defaults
   let bSz = 2;
   let bSp = 2;
-  board1 = new DrawingBoard({ x: 100, y: 240, size: 330 });
+  board1 = new DrawingBoard({ x: 100, y: 240, size: 330, brush: 15});
   board2 = new DrawingBoard({ x: 100, y: 130 });
   board3 = new DrawingBoard({ x: 100, y: 530 });
 
   bg_img = [img_4, img_5, img_1, img_2, img_3, "#222222", 0];
-  mods = [new Model_1(model1), new Model_2(model2), new Model_3(model3), new Model_4(model4), new Model_5(model5),new Model_6(model6)];
+  mods = [new Model_1(model1), new Model_2(model2), new Model_3(model3), new Model_4(model4), new Model_5(model5),new Model_6(model6),new Model_7(model7)];
 
   // defined in your index.html; guarded so a missing function doesn't crash setup()
   if (typeof hideLoadingScreen === "function") hideLoadingScreen();
@@ -108,6 +109,7 @@ function draw() {
     board3.draw();
   } else {
     if (active === 5) mods[5].raw = board1.getRawArray();
+    if (active === 6) mods[6].raw = board1.getRawArray();
     mods[active].draw(board1.getInputVector(), board1.getCellPositions(), show_shadow, show_lines, show_labels);
     board1.draw();
   }
@@ -115,7 +117,7 @@ function draw() {
   if(show_labels){
     push();
     textSize(15); fill("#D3DAD9"); textLeading(40);
-    text("Press C to clear the board.\t\t||\t\tPress 1 to 6 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.\t\t||\t\tPress N to turn off / on labels.", 0, 20);
+    text("Press C to clear the board.\t\t||\t\tPress 1 to 7 to change Model.\t\t||\t\tPress F to change Background.\t\t||\t\tPress S to turn off / on shadows.\t\t||\t\tPress L to turn off / on network lines.\t\t||\t\tPress N to turn off / on labels.", 0, 20);
     pop();
 
     pop();
@@ -161,5 +163,5 @@ function keyPressed() {
   if (k === "n") show_labels = !show_labels;
   if (k === "f") bg_img_index = (bg_img_index + 1) % bg_img.length;
   if (k === "r") window.open("https://github.com/MuhammadEssa2002/neural_canvas", "_blank");
-  if ("123456".includes(k) && k !== "") active = int(k) - 1;
+  if ("1234567".includes(k) && k !== "") active = int(k) - 1;
 }
